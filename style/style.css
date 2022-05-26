@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;700&display=swap");
 body {
   margin: 0;
   padding: 0;
@@ -6,12 +7,18 @@ body {
   font: inherit;
   vertical-align: baseline;
   background-color: #ddd5e2;
+  font-family: "Josefin Sans", sans-serif;
 }
 
 .header {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.header__title {
+  font-weight: 700;
+  font-size: 48px;
+  color: #272033;
 }
 
 .main {
@@ -25,6 +32,8 @@ body {
   height: 80vw;
   max-width: 700px;
   max-height: 700px;
+  border: 5px solid #272033;
+  border-radius: 5px;
   display: grid;
   grid-template-columns: repeat(8, 12.5%);
   grid-template-rows: repeat(8, 12.5%);

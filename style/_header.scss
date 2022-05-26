@@ -4,4 +4,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    &__title {
+        font-weight: $font-bold;
+        font-size: 48px;
+        color: $foreground-color;
+    }
 }
