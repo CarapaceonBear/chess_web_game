@@ -17,9 +17,11 @@
         grid-template-rows: repeat(8, 12.5%);
 
         &--black-square {
+            position: static;
             background-color: $black-color;
         }
         &--white-square {
+            position: static;
             background-color: $white-color;
         }
     }

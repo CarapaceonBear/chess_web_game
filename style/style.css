@@ -30,9 +30,11 @@ body {
   grid-template-rows: repeat(8, 12.5%);
 }
 .main__board--black-square {
+  position: static;
   background-color: #47395d;
 }
 .main__board--white-square {
+  position: static;
   background-color: #cdbee6;
 }
 
@@ -290,4 +292,28 @@ body {
 
 .square77 {
   grid-area: 1/8/2/9;
+}
+
+.piece {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.piece__image {
+  position: absolute;
+  width: 90%;
+  height: 90%;
+}
+.piece__button {
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  background-color: rgba(0, 255, 255, 0);
+  border: none;
+}
+.piece__button:hover {
+  background-color: rgba(74, 255, 83, 0.2901960784);
 }/*# sourceMappingURL=style.css.map */
