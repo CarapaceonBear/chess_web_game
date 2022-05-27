@@ -313,13 +313,13 @@ body {
 }
 .piece__image {
   position: absolute;
-  width: 90%;
-  height: 90%;
+  width: 75%;
+  height: 75%;
 }
 .piece__button {
   position: absolute;
-  width: 90%;
-  height: 90%;
+  width: 75%;
+  height: 75%;
   background-color: rgba(0, 255, 255, 0);
   border: none;
 }
