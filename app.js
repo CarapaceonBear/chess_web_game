@@ -488,19 +488,25 @@ const convertSquareXYtoClass = (xy) => {
 }
 
 const onPieceClick = (event, state) => {
+    let piece = getPieceObject(event.target.id);
     switch (state) {
         case 1:
-            let piece = getPieceObject(event.target.id);
-            currentPiece = piece;
-            let moveArrays = buildMoveArrays(piece);
-            displayMoves(moveArrays);
-            gameState ++;
+            if (piece.colour == "white") {
+                currentPiece = piece;
+                let moveArrays = buildMoveArrays(piece);
+                displayMoves(moveArrays);
+                gameState ++;
+            }
             break;
         case 2:
             break;
         case 3:
-            console.log(event.target.id);
-            gameState ++;
+            if (piece.colour == "black") {
+                currentPiece = piece;
+                let moveArrays = buildMoveArrays(piece);
+                displayMoves(moveArrays);
+                gameState ++;
+            }
             break;
         case 4:
             break;
