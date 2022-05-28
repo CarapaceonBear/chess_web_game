@@ -285,7 +285,54 @@ const setUpBoard = () => {
             blackOccupiedSpaces.push(piece.square);
         }
     });
+    makePiecesSelectable(gameState);
     displayWhoseMove(gameState);
+}
+
+const makePiecesSelectable = (state) => {
+    let pieces = document.querySelectorAll(".piece");
+    console.log("check");
+    console.log(pieces[0]);
+    pieces.forEach((piece) => {
+        let id = piece.id.substring(0, 5);
+        if (id == "white") {
+            piece.classList.add("selectable");
+        } else {
+            piece.classList.remove("selectable");
+        }
+    });
+    switch (state) {
+        case 1:
+            pieces.forEach((piece) => {
+                let id = piece.id.substring(0, 5);
+                if (id == "white") {
+                    piece.classList.add("selectable");
+                } else {
+                    piece.classList.remove("selectable");
+                }
+            });
+            break;
+        case 2:
+            pieces.forEach((piece) => {
+                piece.classList.remove("selectable");
+            })
+            break;
+        case 3:
+            pieces.forEach((piece) => {
+                let id = piece.id.substring(0, 5);
+                if (id == "black") {
+                    piece.classList.add("selectable");
+                } else {
+                    piece.classList.remove("selectable");
+                }
+            });
+            break;
+        case 4:
+            pieces.forEach((piece) => {
+                piece.classList.remove("selectable");
+            })
+            break;
+    }
 }
 
 const resetGame = () => {
@@ -582,5 +629,6 @@ document.addEventListener("click", function (event) {
             clearOverlays();
         } 
     }
+    makePiecesSelectable(gameState);
     displayWhoseMove(gameState);
 });
