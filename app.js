@@ -392,14 +392,14 @@ const getPieceObject = (givenName) => {
 // TODO if there are no valid moves, deselect the piece
 const buildMoveArrays = (piece) => {
     let startingPosition = piece.square;
-    let player = null;
-    let opponent = null;
+    let playerSpaces = null;
+    let opponentSpaces = null;
     if (piece.colour === "white") {
-        player = whiteOccupiedSpaces;
-        opponent = blackOccupiedSpaces;
+        playerSpaces = whiteOccupiedSpaces;
+        opponentSpaces = blackOccupiedSpaces;
     } else {
-        player = blackOccupiedSpaces;
-        opponent = whiteOccupiedSpaces;
+        playerSpaces = blackOccupiedSpaces;
+        opponentSpaces = whiteOccupiedSpaces;
     }
     let moves = [];
     let result = null;
@@ -419,7 +419,7 @@ const buildMoveArrays = (piece) => {
             for (let i = 1; i < (startingPosition[1] + 1); i++) {
                 moves[3].push([startingPosition[0], (startingPosition[1] - i)]);
             }
-            return checkDirectionsForBlockers(moves, player, opponent);
+            return checkDirectionsForBlockers(moves, playerSpaces, opponentSpaces);
         case "knight":
             break;
         case "bishop":
@@ -437,42 +437,69 @@ const buildMoveArrays = (piece) => {
             for (let i = 1; (i < (startingPosition[0] + 1) && i < (startingPosition[1] + 1)); i++) {
                 moves[3].push([(startingPosition[0] - i), (startingPosition[1] - i)]);
             }
-            return checkDirectionsForBlockers(moves, player, opponent);
+            return checkDirectionsForBlockers(moves, playerSpaces, opponentSpaces);
         case "queen":
             break;
         case "king":
             break;
         case "pawn":
             if (piece.colour == "white") {
-                moves[0].push([startingPosition[0], (startingPosition[1] + 1)]);
+                moves.push([startingPosition[0], (startingPosition[1] + 1)]);
                 if (startingPosition[1] == 1) {
-                    moves[0].push([startingPosition[0], (startingPosition[1] + 2)]);
+                    moves.push([startingPosition[0], (startingPosition[1] + 2)]);
                 }
             } else {
-                moves[0].push([startingPosition[0], (startingPosition[1] - 1)]);
+                moves.push([startingPosition[0], (startingPosition[1] - 1)]);
                 if (startingPosition[1] == 6) {
-                    moves[0].push([startingPosition[0], (startingPosition[1] - 2)]);
+                    moves.push([startingPosition[0], (startingPosition[1] - 2)]);
                 }
             }
-            //
-            return ;
+            // check all pieces for blockers
+            let allPieces = playerSpaces.concat(opponentSpaces);
+            moves.forEach((move, index) => {
+                allPieces.forEach((space) => {
+                    if ((space[0] == move[0]) && (space[1] == move[1])) {
+                        moves.length = index;
+                    }
+                });
+            })
+            // check diagonals for captures
+            let captures = [];
+            if (piece.colour == "white") {
+                opponentSpaces.forEach((space) => {
+                    if (((startingPosition[0] + 1) === space[0]) && ((startingPosition[1] + 1) === space[1])) {
+                        captures.push(space);
+                    } else if (((startingPosition[0] - 1) === space[0]) && ((startingPosition[1] + 1) === space[1])) {
+                        captures.push(space);
+                    }
+                });
+            } else {
+                opponentSpaces.forEach((space) => {
+                    if (((startingPosition[0] + 1) === space[0]) && ((startingPosition[1] - 1) === space[1])) {
+                        captures.push(space);
+                    } else if (((startingPosition[0] - 1) === space[0]) && ((startingPosition[1] - 1) === space[1])) {
+                        captures.push(space);
+                    }
+                });
+            }
+            return ([moves, captures]) ;
     }
     // return result;
 }
 
-const checkDirectionsForBlockers = (array, player, opponent) => {
+const checkDirectionsForBlockers = (array, playerSpaces, opponentSpaces) => {
     let moves = array;
     let captures = [];
     moves.forEach((direction) => {
         direction.forEach((move, index) => {
             // check against allied pieces for blockers
-            player.forEach((space) => {
+            playerSpaces.forEach((space) => {
                 if ((space[0] == move[0]) && (space[1] == move[1])) {
                     direction.length = index;
                 }
             });
             // check against opponent pieces for captures
-            opponent.forEach((space) => {
+            opponentSpaces.forEach((space) => {
                 if ((space[0] == move[0]) && (space[1] == move[1])) {
                     direction.length = index;
                     captures.push(move);
@@ -484,6 +511,8 @@ const checkDirectionsForBlockers = (array, player, opponent) => {
     for (i = 1; i < moves.length; i++) {
         returnMoves.push(...moves[i]);
     }
+    console.log(returnMoves);
+    console.log(captures);
     return ([returnMoves, captures]);
 }
 
@@ -510,6 +539,8 @@ const onPieceClick = (event, state) => {
             if (piece.colour == "white") {
                 currentPiece = piece;
                 let moveArrays = buildMoveArrays(piece);
+                console.log("moveArrays");
+                console.log(moveArrays);
                 displayMoves(moveArrays);
                 gameState ++;
             }
@@ -576,6 +607,9 @@ const onOverlayClick = (event, type) => {
     console.log(currentPiece);
     
     gameState ++;
+    if (gameState > 4) {
+        gameState = 1;
+    };
     currentPiece = null;
 }
 
