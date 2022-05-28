@@ -10,7 +10,7 @@ const pieces = [
         name: "whiteRookOne",
         button: "whiteRookOneButton",
         colour: "white",
-        square: [0,0],
+        square: [3,3],
         ruleset: "rook",
         image: "chess_piece_2_white_rook.png"
     },
@@ -328,10 +328,46 @@ const getPieceObject = (givenName) => {
 
 const buildMoveArrays = (piece) => {
     let startingPosition = piece.square;
-    let ruleset = piece.ruleset;
-    console.log(ruleset);
-    switch (ruleset) {
+    let moves = []
+    let captures = []
+    switch (piece.ruleset) {
         case "rook":
+            // get possible moves on empty board
+            // [right, left, up, down]
+            moves = [[],[],[],[]];
+            for (let i = 1; i < (8 - startingPosition[0]); i++) {
+                moves[0].push([(startingPosition[0] + i), startingPosition[1]]);
+            }
+            for (let i = 1; i < (startingPosition[0] + 1); i++) {
+                moves[1].push([(startingPosition[0] - i), startingPosition[1]])
+            }
+            for (let i = 1; i < (8 - startingPosition[1]); i++) {
+                moves[2].push([startingPosition[0], (startingPosition[1] + i)]);
+            }
+            for (let i = 1; i < (startingPosition[1] + 1); i++) {
+                moves[3].push([startingPosition[0], (startingPosition[1] - i)]);
+            }
+            // check against allied pieces for blockers
+            moves.forEach((direction) => {
+                direction.forEach((move, index) => {
+                    whiteOccupiedSpaces.forEach((space) => {
+                        if ((space[0] == move[0]) && (space[1] == move[1])) {
+                            direction.length = index;
+                        }
+                    })
+                });
+            })
+            // check against opponent pieces for captures
+            moves.forEach((direction) => {
+                direction.forEach((move, index) => {
+                    blackOccupiedSpaces.forEach((space) => {
+                        if ((space[0] == move[0]) && (space[1] == move[1])) {
+                            direction.length = index;
+                            captures.push(move);
+                        }
+                    })
+                })
+            })
             break;
         case "knight":
             break;
@@ -342,11 +378,25 @@ const buildMoveArrays = (piece) => {
         case "king":
             break;
         case "white-pawn":
+            // get possible moves on empty board
+            moves.push([startingPosition[0], (startingPosition[1] + 1)]);
+            if (startingPosition[1] == 1) {
+                moves.push([startingPosition[0], (startingPosition[1] + 2)]);
+            }
+            // check against allied pieces for blockers
+            for (let i = 0; i < moves.length; i++) {
+                if (pieces.includes(moves[i])) {
+                    moves.length = i;
+                }
+            };
+            // check against opponent pieces for captures
+            console.log(moves);
+
             break;
         case "black-pawn":
             break;
-
     }
+    return ([moves, captures]);
 }
 
 const convertSquareClassToXY = (square) => {
@@ -360,7 +410,9 @@ const onPieceClick = (event, state) => {
     switch (state) {
         case 1:
             let piece = getPieceObject(event.target.id);
-            buildMoveArrays(piece);
+            let moveArrays = buildMoveArrays(piece);
+            console.log(moveArrays);
+            // displayMoves(piece, moveArrays);
             gameState ++;
             break;
         case 2:
