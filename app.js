@@ -7,7 +7,7 @@ const pieces = [
     {
         name: "whiteRookOne",
         colour: "white",
-        square: [3,3],
+        square: [0,0],
         ruleset: "rook",
         image: "chess_piece_2_white_rook.png"
     },
@@ -64,56 +64,56 @@ const pieces = [
         name: "whitePawnOne",
         colour: "white",
         square: [0,1],
-        ruleset: "white-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_white_pawn.png"
     },
     {
         name: "whitePawnTwo",
         colour: "white",
         square: [1,1],
-        ruleset: "white-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_white_pawn.png"
     },
     {
         name: "whitePawnThree",
         colour: "white",
         square: [2,1],
-        ruleset: "white-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_white_pawn.png"
     },
     {
         name: "whitePawnFour",
         colour: "white",
         square: [3,1],
-        ruleset: "white-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_white_pawn.png"
     },
     {
         name: "whitePawnFive",
         colour: "white",
         square: [4,1],
-        ruleset: "white-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_white_pawn.png"
     },
     {
         name: "whitePawnSix",
         colour: "white",
         square: [5,1],
-        ruleset: "white-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_white_pawn.png"
     },
     {
         name: "whitePawnSeven",
         colour: "white",
         square: [6,1],
-        ruleset: "white-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_white_pawn.png"
     },
     {
         name: "whitePawnEight",
         colour: "white",
         square: [7,1],
-        ruleset: "white-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_white_pawn.png"
     },
     {
@@ -176,56 +176,56 @@ const pieces = [
         name: "blackPawnOne",
         colour: "black",
         square: [0,6],
-        ruleset: "black-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_black_pawn.png"
     },
     {
         name: "blackPawnTwo",
         colour: "black",
         square: [1,6],
-        ruleset: "black-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_black_pawn.png"
     },
     {
         name: "blackPawnThree",
         colour: "black",
         square: [2,6],
-        ruleset: "black-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_black_pawn.png"
     },
     {
         name: "blackPawnFour",
         colour: "black",
         square: [3,6],
-        ruleset: "black-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_black_pawn.png"
     },
     {
         name: "blackPawnFive",
         colour: "black",
         square: [4,6],
-        ruleset: "black-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_black_pawn.png"
     },
     {
         name: "blackPawnSix",
         colour: "black",
         square: [5,6],
-        ruleset: "black-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_black_pawn.png"
     },
     {
         name: "blackPawnSeven",
         colour: "black",
         square: [6,6],
-        ruleset: "black-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_black_pawn.png"
     },
     {
         name: "blackPawnEight",
         colour: "black",
         square: [7,6],
-        ruleset: "black-pawn",
+        ruleset: "pawn",
         image: "chess_piece_2_black_pawn.png"
     }
 ];
@@ -237,11 +237,12 @@ let currentPiece = null;
 // game-state 
 //  1 : white piece selection
 //  2 : white move selection
-//  1 : black piece selection
-//  2 : black move selection
+//  3 : black piece selection
+//  4 : black move selection
 let gameState = 1;
 
 const setUpBoard = () => {
+    console.log("setting up the board");
     pieces.forEach((piece) => {
         spawnPiece(piece);
         if (piece.colour === "white") {
@@ -256,16 +257,6 @@ const setUpBoard = () => {
 
 const makePiecesSelectable = (state) => {
     let pieces = document.querySelectorAll(".piece");
-    console.log("check");
-    console.log(pieces[0]);
-    pieces.forEach((piece) => {
-        let id = piece.id.substring(0, 5);
-        if (id == "white") {
-            piece.classList.add("selectable");
-        } else {
-            piece.classList.remove("selectable");
-        }
-    });
     switch (state) {
         case 1:
             pieces.forEach((piece) => {
@@ -315,7 +306,6 @@ const clearBoard = () => {
     })
     whiteOccupiedSpaces.length = 0;
     blackOccupiedSpaces.length = 0;
-    console.log(whiteOccupiedSpaces);
 }
 
 const clearOverlays = () => {
@@ -399,6 +389,7 @@ const getPieceObject = (givenName) => {
     return pieces.find(piece => piece.name === givenName)
 }
 
+// TODO if there are no valid moves, deselect the piece
 const buildMoveArrays = (piece) => {
     let startingPosition = piece.square;
     let player = null;
@@ -410,8 +401,9 @@ const buildMoveArrays = (piece) => {
         player = blackOccupiedSpaces;
         opponent = whiteOccupiedSpaces;
     }
-    let moves = []
-    let captures = []
+    let moves = [];
+    let captures = [];
+    let result = null;
     switch (piece.ruleset) {
         case "rook":
             // get possible moves on empty board
@@ -429,39 +421,31 @@ const buildMoveArrays = (piece) => {
             for (let i = 1; i < (startingPosition[1] + 1); i++) {
                 moves[3].push([startingPosition[0], (startingPosition[1] - i)]);
             }
-            // check against allied pieces for blockers
-            moves.forEach((direction) => {
-                direction.forEach((move, index) => {
-                    player.forEach((space) => {
-                        if ((space[0] == move[0]) && (space[1] == move[1])) {
-                            direction.length = index;
-                        }
-                    })
-                });
-            })
-            // check against opponent pieces for captures
-            moves.forEach((direction) => {
-                direction.forEach((move, index) => {
-                   opponent.forEach((space) => {
-                        if ((space[0] == move[0]) && (space[1] == move[1])) {
-                            direction.length = index;
-                            captures.push(move);
-                        }
-                    })
-                })
-            })
-            // condense moves into one array
-            moves = moves[0].concat(moves[1], moves[2], moves[3]);
-            break;
+            return checkDirectionsForBlockers(moves, captures, player, opponent);
         case "knight":
             break;
         case "bishop":
-            break;
+            // get possible moves on empty board
+            // [+x+y, +x-y, -x+y, -x-y]
+            moves = [[],[],[],[]];
+            for (let i = 1; (i < (8 - startingPosition[0]) && i < (8 - startingPosition[1])); i++) {
+                moves[0].push([(startingPosition[0] + i), (startingPosition[1] + i)]);
+            }
+            for (let i = 1; (i < (8 - startingPosition[0]) && i < (startingPosition[1] + 1)); i++) {
+                moves[1].push([(startingPosition[0] + i), (startingPosition[1] - i)]);
+            }
+            for (let i = 1; (i < (startingPosition[0] + 1) && i < (8 - startingPosition[1])); i++) {
+                moves[2].push([(startingPosition[0] - i), (startingPosition[1] + i)]);
+            }
+            for (let i = 1; (i < (startingPosition[0] + 1) && i < (startingPosition[1] + 1)); i++) {
+                moves[3].push([(startingPosition[0] - i), (startingPosition[1] - i)]);
+            }
+            return checkDirectionsForBlockers(moves, captures, player, opponent);
         case "queen":
             break;
         case "king":
             break;
-        case "white-pawn":
+        case "pawn":
             // get possible moves on empty board
             moves.push([startingPosition[0], (startingPosition[1] + 1)]);
             if (startingPosition[1] == 1) {
@@ -477,9 +461,31 @@ const buildMoveArrays = (piece) => {
             console.log(moves);
 
             break;
-        case "black-pawn":
-            break;
     }
+    // return result;
+}
+
+const checkDirectionsForBlockers = (arrayOne, arrayTwo, player, opponent) => {
+    let moves = arrayOne;
+    let captures = arrayTwo
+    moves.forEach((direction) => {
+        direction.forEach((move, index) => {
+            // check against allied pieces for blockers
+            player.forEach((space) => {
+                if ((space[0] == move[0]) && (space[1] == move[1])) {
+                    direction.length = index;
+                }
+            });
+            // check against opponent pieces for captures
+            opponent.forEach((space) => {
+                if ((space[0] == move[0]) && (space[1] == move[1])) {
+                    direction.length = index;
+                    captures.push(move);
+                }
+            });
+        });
+    })
+    moves = moves[0].concat(moves[1], moves[2], moves[3]);
     return ([moves, captures]);
 }
 
