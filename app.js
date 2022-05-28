@@ -305,6 +305,14 @@ const spawnPiece = (piece) => {
     // window[piece.button] = document.getElementById(`${piece.button}`)
 }
 
+const spawnOverlay = (xy, type) => {
+    let square = convertSquareXYtoClass(xy);
+    gameBoard.innerHTML +=
+        `<div class="move ${square}">
+            <div class="move__${type}"></div>
+        </div>`   
+}
+
 const displayWhoseMove = (gameState) => {
     switch (gameState) {
         case 1:
@@ -377,6 +385,8 @@ const buildMoveArrays = (piece) => {
                     })
                 })
             })
+            // condense moves into one array
+            moves = moves[0].concat(moves[1], moves[2], moves[3]);
             break;
         case "knight":
             break;
@@ -408,6 +418,15 @@ const buildMoveArrays = (piece) => {
     return ([moves, captures]);
 }
 
+const displayMoves = (moves) => {
+    moves[0].forEach((move) => {
+        spawnOverlay(move, "empty");
+    })
+    moves[1].forEach((move) => {
+        spawnOverlay(move, "capture");
+    });
+}
+
 const convertSquareClassToXY = (square) => {
     return [square[6],square[7]]
 }
@@ -420,8 +439,7 @@ const onPieceClick = (event, state) => {
         case 1:
             let piece = getPieceObject(event.target.id);
             let moveArrays = buildMoveArrays(piece);
-            console.log(moveArrays);
-            // displayMoves(piece, moveArrays);
+            displayMoves(moveArrays);
             gameState ++;
             break;
         case 2:
@@ -434,6 +452,7 @@ const onPieceClick = (event, state) => {
             break;
     }
 }
+
 
 
 setUpBoard();
