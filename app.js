@@ -509,36 +509,52 @@ const onPieceClick = (event, state) => {
 
 const onOverlayClick = (event, type) => {
     clearOverlays();
-    let player = null;
-    let opponent = null;
+    let playerSpaces = null;
+    let opponentSpaces = null;
     if (currentPiece.colour === "white") {
-        player = whiteOccupiedSpaces;
-        opponent = blackOccupiedSpaces;
+        playerSpaces = whiteOccupiedSpaces;
+        opponentSpaces = blackOccupiedSpaces;
     } else {
-        player = blackOccupiedSpaces;
-        opponent = whiteOccupiedSpaces;
+        playerSpaces = blackOccupiedSpaces;
+        opponentSpaces = whiteOccupiedSpaces;
     }
-    switch (type) {
-        case "empty":
-            // move the sprite
-            let mover = document.getElementById(currentPiece.name);
-            let oldLocation = convertSquareXYtoClass(currentPiece.square);
-            let newLocation = event.target.parentElement.classList[1];
-            mover.classList.remove(oldLocation);
-            mover.classList.add(newLocation);
-            // update location arrays
-            let x = player.indexOf(currentPiece.square);
-            player.splice(x, 1);
-            let y = convertSquareClassToXY(newLocation);
-            player.push(y);
-            // update the object location
-            currentPiece.square = convertSquareClassToXY(newLocation);
-            console.log(player);
-            break;
-        case "capture":
-            break;
+    let movingSprite = document.getElementById(currentPiece.name);
+    let oldLocationClass = convertSquareXYtoClass(currentPiece.square);
+    let newLocationClass = event.target.parentElement.classList[1];
+    let newLocationXY = convertSquareClassToXY(newLocationClass);
+    if  (type === "capture") {
+        let capturedPiece = document.querySelectorAll(`.${newLocationClass}`)[1];
+        capturedPiece.remove()
+
+        newLocationXY = [parseInt(newLocationXY[0]), parseInt(newLocationXY[1])];
+        let newLocationOpponentIndex = 0;
+        // for some reason, indexOf() doesn't work here, while it does just below
+        opponentSpaces.forEach((space, index) => {
+            if ((newLocationXY[0] === space[0]) && (newLocationXY[1] === space[1])) {
+                newLocationOpponentIndex =  index;
+            }
+        });
+        opponentSpaces.splice(newLocationOpponentIndex, 1);
     }
+    movingSprite.classList.remove(oldLocationClass);
+    movingSprite.classList.add(newLocationClass);
+    console.log("moving sprite");
+    console.log(movingSprite);
+    
+    let oldLocationPlayerIndex = playerSpaces.indexOf(currentPiece.square);
+    playerSpaces.splice(oldLocationPlayerIndex, 1);
+    playerSpaces.push(newLocationXY);
+    console.log("player spaces");
+    console.log(playerSpaces);
+    console.log("opponent spaces");
+    console.log(opponentSpaces);
+    
+    currentPiece.square = newLocationXY;
+    console.log("current piece");
+    console.log(currentPiece);
+    
     gameState ++;
+    currentPiece = null;
 }
 
 
