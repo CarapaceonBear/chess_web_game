@@ -9,6 +9,8 @@
     height: 100%;
     position: relative;
 
+    z-index: 0;
+
     &__image {
         position: absolute;
         width: 75%;
@@ -33,6 +35,8 @@
 
     height: 100%;
     width: 100%;
+
+    z-index: 1;
     
     &__empty {
         width: 80%;
