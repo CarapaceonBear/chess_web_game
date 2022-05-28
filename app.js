@@ -1,15 +1,11 @@
 const gameBoard = document.querySelector(".main__board");
 const gameDescription = document.querySelector(".header__description")
 const resetButton = document.querySelector(".header__reset");
-// let whiteRookOneButton = null;
-// let whiteRookTwoButton = null;
-// let whiteBishopOneButton = null;
 
 // TODO set up import for the pieces array
 const pieces = [
     {
         name: "whiteRookOne",
-        button: "whiteRookOneButton",
         colour: "white",
         square: [3,3],
         ruleset: "rook",
@@ -17,7 +13,6 @@ const pieces = [
     },
     {
         name: "whiteKnightOne",
-        button: "whiteKnightOneButton",
         colour: "white",
         square: [1,0],
         ruleset: "knight",
@@ -25,7 +20,6 @@ const pieces = [
     },
     {
         name: "whiteBishopOne",
-        button: "whiteBishopOneButton",
         colour: "white",
         square: [2,0],
         ruleset: "bishop",
@@ -33,7 +27,6 @@ const pieces = [
     },
     {
         name: "whiteQueen",
-        button: "whiteQueenButton",
         colour: "white",
         square: [3,0],
         ruleset: "queen",
@@ -41,7 +34,6 @@ const pieces = [
     },
     {
         name: "whiteKing",
-        button: "whiteKingButton",
         colour: "white",
         square: [4,0],
         ruleset: "king",
@@ -49,7 +41,6 @@ const pieces = [
     },
     {
         name: "whiteBishopTwo",
-        button: "whiteBishopTwoButton",
         colour: "white",
         square: [5,0],
         ruleset: "bishop",
@@ -57,7 +48,6 @@ const pieces = [
     },
     {
         name: "whiteKnightTwo",
-        button: "whiteKnightTwoButton",
         colour: "white",
         square: [6,0],
         ruleset: "knight",
@@ -65,7 +55,6 @@ const pieces = [
     },
     {
         name: "whiteRookTwo",
-        button: "whiteRookTwoButton",
         colour: "white",
         square: [7,0],
         ruleset: "rook",
@@ -73,7 +62,6 @@ const pieces = [
     },
     {
         name: "whitePawnOne",
-        button: "whitePawnOneButton",
         colour: "white",
         square: [0,1],
         ruleset: "white-pawn",
@@ -81,7 +69,6 @@ const pieces = [
     },
     {
         name: "whitePawnTwo",
-        button: "whitePawnTwoButton",
         colour: "white",
         square: [1,1],
         ruleset: "white-pawn",
@@ -89,7 +76,6 @@ const pieces = [
     },
     {
         name: "whitePawnThree",
-        button: "whitePawnThreeButton",
         colour: "white",
         square: [2,1],
         ruleset: "white-pawn",
@@ -97,7 +83,6 @@ const pieces = [
     },
     {
         name: "whitePawnFour",
-        button: "whitePawnFourButton",
         colour: "white",
         square: [3,1],
         ruleset: "white-pawn",
@@ -105,7 +90,6 @@ const pieces = [
     },
     {
         name: "whitePawnFive",
-        button: "whitePawnFiveButton",
         colour: "white",
         square: [4,1],
         ruleset: "white-pawn",
@@ -113,7 +97,6 @@ const pieces = [
     },
     {
         name: "whitePawnSix",
-        button: "whitePawnSixButton",
         colour: "white",
         square: [5,1],
         ruleset: "white-pawn",
@@ -121,7 +104,6 @@ const pieces = [
     },
     {
         name: "whitePawnSeven",
-        button: "whitePawnSevenButton",
         colour: "white",
         square: [6,1],
         ruleset: "white-pawn",
@@ -129,7 +111,6 @@ const pieces = [
     },
     {
         name: "whitePawnEight",
-        button: "whitePawnEightButton",
         colour: "white",
         square: [7,1],
         ruleset: "white-pawn",
@@ -137,7 +118,6 @@ const pieces = [
     },
     {
         name: "blackRookOne",
-        button: "blackRookOneButton",
         colour: "black",
         square: [0,7],
         ruleset: "rook",
@@ -145,7 +125,6 @@ const pieces = [
     },
     {
         name: "blackKnightOne",
-        button: "blackKnightOneButton",
         colour: "black",
         square: [1,7],
         ruleset: "knight",
@@ -153,7 +132,6 @@ const pieces = [
     },
     {
         name: "blackBishopOne",
-        button: "blackBishopOneButton",
         colour: "black",
         square: [2,7],
         ruleset: "bishop",
@@ -161,7 +139,6 @@ const pieces = [
     },
     {
         name: "blackQueen",
-        button: "blackQueenButton",
         colour: "black",
         square: [3,7],
         ruleset: "queen",
@@ -169,7 +146,6 @@ const pieces = [
     },
     {
         name: "blackKing",
-        button: "blackKingButton",
         colour: "black",
         square: [4,7],
         ruleset: "king",
@@ -177,7 +153,6 @@ const pieces = [
     },
     {
         name: "blackBishopTwo",
-        button: "blackBishopTwoButton",
         colour: "black",
         square: [5,7],
         ruleset: "bishop",
@@ -185,7 +160,6 @@ const pieces = [
     },
     {
         name: "blackKnightTwo",
-        button: "blackKnightTwoButton",
         colour: "black",
         square: [6,7],
         ruleset: "knight",
@@ -193,7 +167,6 @@ const pieces = [
     },
     {
         name: "blackRookTwo",
-        button: "blackRookTwoButton",
         colour: "black",
         square: [7,7],
         ruleset: "rook",
@@ -201,7 +174,6 @@ const pieces = [
     },
     {
         name: "blackPawnOne",
-        button: "blackPawnOneButton",
         colour: "black",
         square: [0,6],
         ruleset: "black-pawn",
@@ -209,7 +181,6 @@ const pieces = [
     },
     {
         name: "blackPawnTwo",
-        button: "blackPawnTwoButton",
         colour: "black",
         square: [1,6],
         ruleset: "black-pawn",
@@ -217,7 +188,6 @@ const pieces = [
     },
     {
         name: "blackPawnThree",
-        button: "blackPawnThreeButton",
         colour: "black",
         square: [2,6],
         ruleset: "black-pawn",
@@ -225,7 +195,6 @@ const pieces = [
     },
     {
         name: "blackPawnFour",
-        button: "blackPawnFourButton",
         colour: "black",
         square: [3,6],
         ruleset: "black-pawn",
@@ -233,7 +202,6 @@ const pieces = [
     },
     {
         name: "blackPawnFive",
-        button: "blackPawnFiveButton",
         colour: "black",
         square: [4,6],
         ruleset: "black-pawn",
@@ -241,7 +209,6 @@ const pieces = [
     },
     {
         name: "blackPawnSix",
-        button: "blackPawnSixButton",
         colour: "black",
         square: [5,6],
         ruleset: "black-pawn",
@@ -249,7 +216,6 @@ const pieces = [
     },
     {
         name: "blackPawnSeven",
-        button: "blackPawnSevenButton",
         colour: "black",
         square: [6,6],
         ruleset: "black-pawn",
@@ -257,7 +223,6 @@ const pieces = [
     },
     {
         name: "blackPawnEight",
-        button: "blackPawnEightButton",
         colour: "black",
         square: [7,6],
         ruleset: "black-pawn",
