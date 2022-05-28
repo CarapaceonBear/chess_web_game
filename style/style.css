@@ -12,12 +12,18 @@ body {
 
 .header {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 .header__title {
   font-weight: 700;
   font-size: 48px;
+  color: #272033;
+}
+.header__description {
+  font-weight: 400;
+  font-size: 28px;
   color: #272033;
 }
 

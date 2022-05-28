@@ -2,12 +2,18 @@
 
 .header {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
     &__title {
         font-weight: $font-bold;
         font-size: 48px;
+        color: $foreground-color;
+    }
+    &__description {
+        font-weight: $font-regular;
+        font-size: 28px;
         color: $foreground-color;
     }
 }

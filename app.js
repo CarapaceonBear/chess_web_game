@@ -1,4 +1,5 @@
 const gameBoard = document.querySelector(".main__board");
+const gameDescription = document.querySelector(".header__description")
 // let whiteRookOneButton = null;
 // let whiteRookTwoButton = null;
 // let whiteBishopOneButton = null;
@@ -230,10 +231,35 @@ const pieces = [
     }
 ];
 
+// game-state 
+//  1 : white piece selection
+//  2 : white move selection
+//  1 : black piece selection
+//  2 : black move selection
+let gameState = 1;
+
 const setUpBoard = () => {
     pieces.forEach((piece) => {
         spawnPiece(piece);
     });
+    displayWhoseMove(gameState);
+}
+
+const displayWhoseMove = (gameState) => {
+    switch (gameState) {
+        case 1:
+            gameDescription.innerText = "White piece selection";
+            break;
+        case 2:
+            gameDescription.innerText = "White move choice";
+            break;
+        case 3:
+            gameDescription.innerText = "Black piece selection";
+            break;
+        case 4:
+            gameDescription.innerText = "Black move choice";
+            break;
+    }
 }
 
 const spawnPiece = (piece) => {
@@ -253,15 +279,33 @@ const convertSquareXYtoClass = (xy) => {
     return `square${xy[0]}${xy[1]}`
 }
 
-const onPieceClick = (event) => {
-    console.log(event.target.id);
+const onPieceClick = (event, state) => {
+    switch (state) {
+        case 1:
+            console.log(event.target.id);
+            gameState ++;
+            break;
+        case 2:
+            break;
+        case 3:
+            console.log(event.target.id);
+            gameState ++;
+            break;
+        case 4:
+            break;
+    }
 }
+
+
+
+
+
 
 
 setUpBoard();
 
 document.addEventListener("click", function (event) {
     if (event.target.matches(".piece__button")) {
-        onPieceClick(event);
+        onPieceClick(event, gameState);
     }
 });
