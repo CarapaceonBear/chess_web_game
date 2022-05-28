@@ -345,9 +345,35 @@ body {
   position: absolute;
   width: 75%;
   height: 75%;
-  background-color: rgba(0, 255, 255, 0);
+  background-color: rgba(0, 0, 0, 0);
   border: none;
 }
 .piece__button:hover {
   background-color: rgba(74, 255, 83, 0.2901960784);
+}
+
+.move {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.move__empty {
+  width: 80%;
+  height: 80%;
+  border-radius: 10%;
+  background-color: rgba(90, 183, 67, 0.8823529412);
+}
+.move__empty:hover {
+  background-color: rgba(60, 248, 13, 0.937254902);
+}
+.move__capture {
+  width: 80%;
+  height: 80%;
+  border-radius: 10%;
+  background-color: rgba(183, 67, 67, 0.8823529412);
+}
+.move__capture:hover {
+  background-color: rgba(239, 22, 22, 0.8823529412);
 }/*# sourceMappingURL=style.css.map */

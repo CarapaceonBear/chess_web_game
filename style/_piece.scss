@@ -18,10 +18,42 @@
         position: absolute;
         width: 75%;
         height: 75%;
-        background-color: #00ffff00;
+        background-color: #00000000;
         border: none;
         &:hover {
             background-color: #4aff534a;
+        }
+    }
+}
+
+.move {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+    width: 100%;
+    
+    &__empty {
+        width: 80%;
+        height: 80%;
+
+        border-radius: 10%;
+        background-color: #5ab743e1;
+
+        &:hover {
+            background-color: #3cf80def;
+        }
+    }
+    &__capture {
+        width: 80%;
+        height: 80%;
+
+        border-radius: 10%;
+        background-color: #b74343e1;
+        
+        &:hover {
+            background-color: #ef1616e1;;
         }
     }
 }
