@@ -9,6 +9,7 @@ const pieces = [
     {
         name: "whiteRookOne",
         button: "whiteRookOneButton",
+        colour: "white",
         square: [0,0],
         ruleset: "rook",
         image: "chess_piece_2_white_rook.png"
@@ -16,6 +17,7 @@ const pieces = [
     {
         name: "whiteKnightOne",
         button: "whiteKnightOneButton",
+        colour: "white",
         square: [1,0],
         ruleset: "knight",
         image: "chess_piece_2_white_knight.png"
@@ -23,6 +25,7 @@ const pieces = [
     {
         name: "whiteBishopOne",
         button: "whiteBishopOneButton",
+        colour: "white",
         square: [2,0],
         ruleset: "bishop",
         image: "chess_piece_2_white_bishop.png"
@@ -30,6 +33,7 @@ const pieces = [
     {
         name: "whiteQueen",
         button: "whiteQueenButton",
+        colour: "white",
         square: [3,0],
         ruleset: "queen",
         image: "chess_piece_2_white_queen.png"
@@ -37,6 +41,7 @@ const pieces = [
     {
         name: "whiteKing",
         button: "whiteKingButton",
+        colour: "white",
         square: [4,0],
         ruleset: "king",
         image: "chess_piece_2_white_king.png"
@@ -44,6 +49,7 @@ const pieces = [
     {
         name: "whiteBishopTwo",
         button: "whiteBishopTwoButton",
+        colour: "white",
         square: [5,0],
         ruleset: "bishop",
         image: "chess_piece_2_white_bishop.png"
@@ -51,6 +57,7 @@ const pieces = [
     {
         name: "whiteKnightTwo",
         button: "whiteKnightTwoButton",
+        colour: "white",
         square: [6,0],
         ruleset: "knight",
         image: "chess_piece_2_white_knight.png"
@@ -58,6 +65,7 @@ const pieces = [
     {
         name: "whiteRookTwo",
         button: "whiteRookTwoButton",
+        colour: "white",
         square: [7,0],
         ruleset: "rook",
         image: "chess_piece_2_white_rook.png"
@@ -65,6 +73,7 @@ const pieces = [
     {
         name: "whitePawnOne",
         button: "whitePawnOneButton",
+        colour: "white",
         square: [0,1],
         ruleset: "white-pawn",
         image: "chess_piece_2_white_pawn.png"
@@ -72,6 +81,7 @@ const pieces = [
     {
         name: "whitePawnTwo",
         button: "whitePawnTwoButton",
+        colour: "white",
         square: [1,1],
         ruleset: "white-pawn",
         image: "chess_piece_2_white_pawn.png"
@@ -79,6 +89,7 @@ const pieces = [
     {
         name: "whitePawnThree",
         button: "whitePawnThreeButton",
+        colour: "white",
         square: [2,1],
         ruleset: "white-pawn",
         image: "chess_piece_2_white_pawn.png"
@@ -86,6 +97,7 @@ const pieces = [
     {
         name: "whitePawnFour",
         button: "whitePawnFourButton",
+        colour: "white",
         square: [3,1],
         ruleset: "white-pawn",
         image: "chess_piece_2_white_pawn.png"
@@ -93,6 +105,7 @@ const pieces = [
     {
         name: "whitePawnFive",
         button: "whitePawnFiveButton",
+        colour: "white",
         square: [4,1],
         ruleset: "white-pawn",
         image: "chess_piece_2_white_pawn.png"
@@ -100,6 +113,7 @@ const pieces = [
     {
         name: "whitePawnSix",
         button: "whitePawnSixButton",
+        colour: "white",
         square: [5,1],
         ruleset: "white-pawn",
         image: "chess_piece_2_white_pawn.png"
@@ -107,6 +121,7 @@ const pieces = [
     {
         name: "whitePawnSeven",
         button: "whitePawnSevenButton",
+        colour: "white",
         square: [6,1],
         ruleset: "white-pawn",
         image: "chess_piece_2_white_pawn.png"
@@ -114,6 +129,7 @@ const pieces = [
     {
         name: "whitePawnEight",
         button: "whitePawnEightButton",
+        colour: "white",
         square: [7,1],
         ruleset: "white-pawn",
         image: "chess_piece_2_white_pawn.png"
@@ -121,6 +137,7 @@ const pieces = [
     {
         name: "blackRookOne",
         button: "blackRookOneButton",
+        colour: "black",
         square: [0,7],
         ruleset: "rook",
         image: "chess_piece_2_black_rook.png"
@@ -128,6 +145,7 @@ const pieces = [
     {
         name: "blackKnightOne",
         button: "blackKnightOneButton",
+        colour: "black",
         square: [1,7],
         ruleset: "knight",
         image: "chess_piece_2_black_knight.png"
@@ -135,6 +153,7 @@ const pieces = [
     {
         name: "blackBishopOne",
         button: "blackBishopOneButton",
+        colour: "black",
         square: [2,7],
         ruleset: "bishop",
         image: "chess_piece_2_black_bishop.png"
@@ -142,6 +161,7 @@ const pieces = [
     {
         name: "blackQueen",
         button: "blackQueenButton",
+        colour: "black",
         square: [3,7],
         ruleset: "queen",
         image: "chess_piece_2_black_queen.png"
@@ -149,6 +169,7 @@ const pieces = [
     {
         name: "blackKing",
         button: "blackKingButton",
+        colour: "black",
         square: [4,7],
         ruleset: "king",
         image: "chess_piece_2_black_king.png"
@@ -156,6 +177,7 @@ const pieces = [
     {
         name: "blackBishopTwo",
         button: "blackBishopTwoButton",
+        colour: "black",
         square: [5,7],
         ruleset: "bishop",
         image: "chess_piece_2_black_bishop.png"
@@ -163,6 +185,7 @@ const pieces = [
     {
         name: "blackKnightTwo",
         button: "blackKnightTwoButton",
+        colour: "black",
         square: [6,7],
         ruleset: "knight",
         image: "chess_piece_2_black_knight.png"
@@ -170,6 +193,7 @@ const pieces = [
     {
         name: "blackRookTwo",
         button: "blackRookTwoButton",
+        colour: "black",
         square: [7,7],
         ruleset: "rook",
         image: "chess_piece_2_black_rook.png"
@@ -177,6 +201,7 @@ const pieces = [
     {
         name: "blackPawnOne",
         button: "blackPawnOneButton",
+        colour: "black",
         square: [0,6],
         ruleset: "black-pawn",
         image: "chess_piece_2_black_pawn.png"
@@ -184,6 +209,7 @@ const pieces = [
     {
         name: "blackPawnTwo",
         button: "blackPawnTwoButton",
+        colour: "black",
         square: [1,6],
         ruleset: "black-pawn",
         image: "chess_piece_2_black_pawn.png"
@@ -191,6 +217,7 @@ const pieces = [
     {
         name: "blackPawnThree",
         button: "blackPawnThreeButton",
+        colour: "black",
         square: [2,6],
         ruleset: "black-pawn",
         image: "chess_piece_2_black_pawn.png"
@@ -198,6 +225,7 @@ const pieces = [
     {
         name: "blackPawnFour",
         button: "blackPawnFourButton",
+        colour: "black",
         square: [3,6],
         ruleset: "black-pawn",
         image: "chess_piece_2_black_pawn.png"
@@ -205,6 +233,7 @@ const pieces = [
     {
         name: "blackPawnFive",
         button: "blackPawnFiveButton",
+        colour: "black",
         square: [4,6],
         ruleset: "black-pawn",
         image: "chess_piece_2_black_pawn.png"
@@ -212,6 +241,7 @@ const pieces = [
     {
         name: "blackPawnSix",
         button: "blackPawnSixButton",
+        colour: "black",
         square: [5,6],
         ruleset: "black-pawn",
         image: "chess_piece_2_black_pawn.png"
@@ -219,6 +249,7 @@ const pieces = [
     {
         name: "blackPawnSeven",
         button: "blackPawnSevenButton",
+        colour: "black",
         square: [6,6],
         ruleset: "black-pawn",
         image: "chess_piece_2_black_pawn.png"
@@ -226,11 +257,15 @@ const pieces = [
     {
         name: "blackPawnEight",
         button: "blackPawnEightButton",
+        colour: "black",
         square: [7,6],
         ruleset: "black-pawn",
         image: "chess_piece_2_black_pawn.png"
     }
 ];
+
+const whiteOccupiedSpaces = [];
+const blackOccupiedSpaces = [];
 
 // game-state 
 //  1 : white piece selection
@@ -242,6 +277,11 @@ let gameState = 1;
 const setUpBoard = () => {
     pieces.forEach((piece) => {
         spawnPiece(piece);
+        if (piece.colour === "white") {
+            whiteOccupiedSpaces.push(piece.square);
+        } else if (piece.colour === "black") {
+            blackOccupiedSpaces.push(piece.square);
+        }
     });
     displayWhoseMove(gameState);
 }
@@ -251,6 +291,18 @@ const clearBoard = () => {
     children.forEach((child) => {
         child.remove()
     })
+    whiteOccupiedSpaces.length = 0;
+    blackOccupiedSpaces.length = 0;
+}
+
+const spawnPiece = (piece) => {
+    let square = convertSquareXYtoClass(piece.square);
+    gameBoard.innerHTML += 
+        `<div class="piece ${square}" id="${piece.name}">
+            <img class="piece__image" src="./assets/${piece.image}">
+            <button class="piece__button" id="${piece.name}"></button>
+        </div>`
+    // window[piece.button] = document.getElementById(`${piece.button}`)
 }
 
 const displayWhoseMove = (gameState) => {
@@ -270,14 +322,31 @@ const displayWhoseMove = (gameState) => {
     }
 }
 
-const spawnPiece = (piece) => {
-    let square = convertSquareXYtoClass(piece.square);
-    gameBoard.innerHTML += 
-        `<div class="piece ${square}" id="${piece.name}">
-            <img class="piece__image" src="./assets/${piece.image}">
-            <button class="piece__button" id="${piece.name}"></button>
-        </div>`
-    // window[piece.button] = document.getElementById(`${piece.button}`)
+const getPieceObject = (givenName) => {
+    return pieces.find(piece => piece.name === givenName)
+}
+
+const buildMoveArrays = (piece) => {
+    let startingPosition = piece.square;
+    let ruleset = piece.ruleset;
+    console.log(ruleset);
+    switch (ruleset) {
+        case "rook":
+            break;
+        case "knight":
+            break;
+        case "bishop":
+            break;
+        case "queen":
+            break;
+        case "king":
+            break;
+        case "white-pawn":
+            break;
+        case "black-pawn":
+            break;
+
+    }
 }
 
 const convertSquareClassToXY = (square) => {
@@ -290,7 +359,8 @@ const convertSquareXYtoClass = (xy) => {
 const onPieceClick = (event, state) => {
     switch (state) {
         case 1:
-            console.log(event.target.id);
+            let piece = getPieceObject(event.target.id);
+            buildMoveArrays(piece);
             gameState ++;
             break;
         case 2:
@@ -303,6 +373,7 @@ const onPieceClick = (event, state) => {
             break;
     }
 }
+
 
 setUpBoard();
 
