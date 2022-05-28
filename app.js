@@ -328,6 +328,15 @@ const getPieceObject = (givenName) => {
 
 const buildMoveArrays = (piece) => {
     let startingPosition = piece.square;
+    let player = null;
+    let opponent = null;
+    if (piece.colour === "white") {
+        player = whiteOccupiedSpaces;
+        opponent = blackOccupiedSpaces;
+    } else {
+        player = blackOccupiedSpaces;
+        opponent = whiteOccupiedSpaces;
+    }
     let moves = []
     let captures = []
     switch (piece.ruleset) {
@@ -350,7 +359,7 @@ const buildMoveArrays = (piece) => {
             // check against allied pieces for blockers
             moves.forEach((direction) => {
                 direction.forEach((move, index) => {
-                    whiteOccupiedSpaces.forEach((space) => {
+                    player.forEach((space) => {
                         if ((space[0] == move[0]) && (space[1] == move[1])) {
                             direction.length = index;
                         }
@@ -360,7 +369,7 @@ const buildMoveArrays = (piece) => {
             // check against opponent pieces for captures
             moves.forEach((direction) => {
                 direction.forEach((move, index) => {
-                    blackOccupiedSpaces.forEach((space) => {
+                   opponent.forEach((space) => {
                         if ((space[0] == move[0]) && (space[1] == move[1])) {
                             direction.length = index;
                             captures.push(move);
