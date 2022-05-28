@@ -22,10 +22,11 @@
         height: 75%;
         background-color: #00000000;
         border: none;
-        &:hover {
-            background-color: #4aff534a;
-        }
+
     }
+}
+.selectable:hover .piece__button {
+    background-color: #4aff534a;
 }
 
 .move {
