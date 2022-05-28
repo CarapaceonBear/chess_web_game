@@ -7,7 +7,7 @@ const pieces = [
     {
         name: "whiteRookOne",
         colour: "white",
-        square: [0,0],
+        square: [0,2],
         ruleset: "rook",
         image: "chess_piece_2_white_rook.png"
     },
@@ -21,7 +21,7 @@ const pieces = [
     {
         name: "whiteBishopOne",
         colour: "white",
-        square: [2,0],
+        square: [2,2],
         ruleset: "bishop",
         image: "chess_piece_2_white_bishop.png"
     },
@@ -63,7 +63,7 @@ const pieces = [
     {
         name: "whitePawnOne",
         colour: "white",
-        square: [0,1],
+        square: [4,5],
         ruleset: "pawn",
         image: "chess_piece_2_white_pawn.png"
     },
@@ -402,11 +402,9 @@ const buildMoveArrays = (piece) => {
         opponent = whiteOccupiedSpaces;
     }
     let moves = [];
-    let captures = [];
     let result = null;
     switch (piece.ruleset) {
         case "rook":
-            // get possible moves on empty board
             // [right, left, up, down]
             moves = [[],[],[],[]];
             for (let i = 1; i < (8 - startingPosition[0]); i++) {
@@ -421,11 +419,10 @@ const buildMoveArrays = (piece) => {
             for (let i = 1; i < (startingPosition[1] + 1); i++) {
                 moves[3].push([startingPosition[0], (startingPosition[1] - i)]);
             }
-            return checkDirectionsForBlockers(moves, captures, player, opponent);
+            return checkDirectionsForBlockers(moves, player, opponent);
         case "knight":
             break;
         case "bishop":
-            // get possible moves on empty board
             // [+x+y, +x-y, -x+y, -x-y]
             moves = [[],[],[],[]];
             for (let i = 1; (i < (8 - startingPosition[0]) && i < (8 - startingPosition[1])); i++) {
@@ -440,34 +437,32 @@ const buildMoveArrays = (piece) => {
             for (let i = 1; (i < (startingPosition[0] + 1) && i < (startingPosition[1] + 1)); i++) {
                 moves[3].push([(startingPosition[0] - i), (startingPosition[1] - i)]);
             }
-            return checkDirectionsForBlockers(moves, captures, player, opponent);
+            return checkDirectionsForBlockers(moves, player, opponent);
         case "queen":
             break;
         case "king":
             break;
         case "pawn":
-            // get possible moves on empty board
-            moves.push([startingPosition[0], (startingPosition[1] + 1)]);
-            if (startingPosition[1] == 1) {
-                moves.push([startingPosition[0], (startingPosition[1] + 2)]);
-            }
-            // check against allied pieces for blockers
-            for (let i = 0; i < moves.length; i++) {
-                if (pieces.includes(moves[i])) {
-                    moves.length = i;
+            if (piece.colour == "white") {
+                moves[0].push([startingPosition[0], (startingPosition[1] + 1)]);
+                if (startingPosition[1] == 1) {
+                    moves[0].push([startingPosition[0], (startingPosition[1] + 2)]);
                 }
-            };
-            // check against opponent pieces for captures
-            console.log(moves);
-
-            break;
+            } else {
+                moves[0].push([startingPosition[0], (startingPosition[1] - 1)]);
+                if (startingPosition[1] == 6) {
+                    moves[0].push([startingPosition[0], (startingPosition[1] - 2)]);
+                }
+            }
+            //
+            return ;
     }
     // return result;
 }
 
-const checkDirectionsForBlockers = (arrayOne, arrayTwo, player, opponent) => {
-    let moves = arrayOne;
-    let captures = arrayTwo
+const checkDirectionsForBlockers = (array, player, opponent) => {
+    let moves = array;
+    let captures = [];
     moves.forEach((direction) => {
         direction.forEach((move, index) => {
             // check against allied pieces for blockers
@@ -485,8 +480,11 @@ const checkDirectionsForBlockers = (arrayOne, arrayTwo, player, opponent) => {
             });
         });
     })
-    moves = moves[0].concat(moves[1], moves[2], moves[3]);
-    return ([moves, captures]);
+    let returnMoves = moves[0];
+    for (i = 1; i < moves.length; i++) {
+        returnMoves.push(...moves[i]);
+    }
+    return ([returnMoves, captures]);
 }
 
 const displayMoves = (moves) => {
