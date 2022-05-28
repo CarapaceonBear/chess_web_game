@@ -1,5 +1,6 @@
 const gameBoard = document.querySelector(".main__board");
 const gameDescription = document.querySelector(".header__description")
+const resetButton = document.querySelector(".header__reset");
 // let whiteRookOneButton = null;
 // let whiteRookTwoButton = null;
 // let whiteBishopOneButton = null;
@@ -245,6 +246,13 @@ const setUpBoard = () => {
     displayWhoseMove(gameState);
 }
 
+const clearBoard = () => {
+    let children = document.querySelectorAll(".piece");
+    children.forEach((child) => {
+        child.remove()
+    })
+}
+
 const displayWhoseMove = (gameState) => {
     switch (gameState) {
         case 1:
@@ -296,16 +304,19 @@ const onPieceClick = (event, state) => {
     }
 }
 
-
-
-
-
-
-
 setUpBoard();
 
 document.addEventListener("click", function (event) {
     if (event.target.matches(".piece__button")) {
         onPieceClick(event, gameState);
+    } else if (event.target.matches(".reset")) {
+        gameState = 1;
+        clearBoard();
+        setUpBoard();
+    } else {
+        if (gameState % 2 == 0) {
+            gameState --;
+        } 
     }
+    displayWhoseMove(gameState);
 });

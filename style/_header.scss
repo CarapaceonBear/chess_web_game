@@ -6,6 +6,10 @@
     justify-content: center;
     align-items: center;
 
+    position: relative;
+    width: 80%;
+    max-width: 700px;
+    
     &__title {
         font-weight: $font-bold;
         font-size: 48px;
@@ -16,4 +20,24 @@
         font-size: 28px;
         color: $foreground-color;
     }
+    &__reset {
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+
+        // display: flex;
+        // justify-content: center;
+        // align-items: center;
+
+        background-color: #ffffff00;
+        height: 3rem;
+        width: 3rem;
+        border-radius: 1.5rem;
+        border: none;
+
+        &:hover {
+            background-color: #540c7b79;
+        }
+    }
+
 }
