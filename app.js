@@ -7,7 +7,7 @@ const pieces = [
     {
         name: "whiteRookOne",
         colour: "white",
-        square: [0,2],
+        square: [0,0],
         ruleset: "rook",
         image: "chess_piece_2_white_rook.png"
     },
@@ -21,7 +21,7 @@ const pieces = [
     {
         name: "whiteBishopOne",
         colour: "white",
-        square: [2,2],
+        square: [2,0],
         ruleset: "bishop",
         image: "chess_piece_2_white_bishop.png"
     },
@@ -63,7 +63,7 @@ const pieces = [
     {
         name: "whitePawnOne",
         colour: "white",
-        square: [4,5],
+        square: [0,1],
         ruleset: "pawn",
         image: "chess_piece_2_white_pawn.png"
     },
@@ -534,13 +534,20 @@ const convertSquareXYtoClass = (xy) => {
 
 const onPieceClick = (event, state) => {
     let piece = getPieceObject(event.target.id);
+    console.log(state);
     switch (state) {
         case 1:
             if (piece.colour == "white") {
+                console.log("hello?");
                 currentPiece = piece;
+                console.log(piece);
                 let moveArrays = buildMoveArrays(piece);
-                console.log("moveArrays");
-                console.log(moveArrays);
+                if ((moveArrays[0].length == 0) && (moveArrays[1].length == 0)) {
+                    console.log("no possible moves");
+                    gameState = 1;
+                    currentPiece = null;
+                    return;
+                }
                 displayMoves(moveArrays);
                 gameState ++;
             }
@@ -551,6 +558,12 @@ const onPieceClick = (event, state) => {
             if (piece.colour == "black") {
                 currentPiece = piece;
                 let moveArrays = buildMoveArrays(piece);
+                if ((moveArrays[0].length == 0) && (moveArrays[1].length == 0)) {
+                    console.log("no possible moves");
+                    gameState = 3;
+                    currentPiece = null;
+                    return;
+                }
                 displayMoves(moveArrays);
                 gameState ++;
             }
