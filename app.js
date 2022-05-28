@@ -5,6 +5,7 @@ const resetButton = document.querySelector(".header__reset");
 // let whiteRookTwoButton = null;
 // let whiteBishopOneButton = null;
 
+// TODO set up import for the pieces array
 const pieces = [
     {
         name: "whiteRookOne",
@@ -266,6 +267,7 @@ const pieces = [
 
 const whiteOccupiedSpaces = [];
 const blackOccupiedSpaces = [];
+let currentPiece = null;
 
 // game-state 
 //  1 : white piece selection
@@ -286,13 +288,64 @@ const setUpBoard = () => {
     displayWhoseMove(gameState);
 }
 
+const resetGame = () => {
+    gameState = 1;
+    clearBoard();
+    clearOverlays();
+    resetPiecePositions();
+    setUpBoard();
+}
+
 const clearBoard = () => {
     let children = document.querySelectorAll(".piece");
     children.forEach((child) => {
-        child.remove()
+        child.remove();
     })
     whiteOccupiedSpaces.length = 0;
     blackOccupiedSpaces.length = 0;
+    console.log(whiteOccupiedSpaces);
+}
+
+const clearOverlays = () => {
+    let children = document.querySelectorAll(".move");
+    children.forEach((child) => {
+        child.remove();
+    })
+}
+
+const resetPiecePositions = () => {
+    pieces[0].square = [0,0];
+    pieces[1].square = [1,0];
+    pieces[2].square = [2,0];
+    pieces[3].square = [3,0];
+    pieces[4].square = [4,0];
+    pieces[5].square = [5,0];
+    pieces[6].square = [6,0];
+    pieces[7].square = [7,0];
+    pieces[8].square = [0,1];
+    pieces[9].square = [1,1];
+    pieces[10].square = [2,1];
+    pieces[11].square = [3,1];
+    pieces[12].square = [4,1];
+    pieces[13].square = [5,1];
+    pieces[14].square = [6,1];
+    pieces[15].square = [7,1];
+    pieces[16].square = [0,7];
+    pieces[17].square = [1,7];
+    pieces[18].square = [2,7];
+    pieces[19].square = [3,7];
+    pieces[20].square = [4,7];
+    pieces[21].square = [5,7];
+    pieces[22].square = [6,7];
+    pieces[23].square = [7,7];
+    pieces[24].square = [0,6];
+    pieces[25].square = [1,6];
+    pieces[26].square = [2,6];
+    pieces[27].square = [3,6];
+    pieces[28].square = [4,6];
+    pieces[29].square = [5,6];
+    pieces[30].square = [6,6];
+    pieces[31].square = [7,6];
 }
 
 const spawnPiece = (piece) => {
@@ -428,7 +481,7 @@ const displayMoves = (moves) => {
 }
 
 const convertSquareClassToXY = (square) => {
-    return [square[6],square[7]]
+    return [parseInt(square[6]),parseInt(square[7])]
 }
 const convertSquareXYtoClass = (xy) => {
     return `square${xy[0]}${xy[1]}`
@@ -438,6 +491,7 @@ const onPieceClick = (event, state) => {
     switch (state) {
         case 1:
             let piece = getPieceObject(event.target.id);
+            currentPiece = piece;
             let moveArrays = buildMoveArrays(piece);
             displayMoves(moveArrays);
             gameState ++;
@@ -453,20 +507,57 @@ const onPieceClick = (event, state) => {
     }
 }
 
+const onOverlayClick = (event, type) => {
+    clearOverlays();
+    let player = null;
+    let opponent = null;
+    if (currentPiece.colour === "white") {
+        player = whiteOccupiedSpaces;
+        opponent = blackOccupiedSpaces;
+    } else {
+        player = blackOccupiedSpaces;
+        opponent = whiteOccupiedSpaces;
+    }
+    switch (type) {
+        case "empty":
+            // move the sprite
+            let mover = document.getElementById(currentPiece.name);
+            let oldLocation = convertSquareXYtoClass(currentPiece.square);
+            let newLocation = event.target.parentElement.classList[1];
+            mover.classList.remove(oldLocation);
+            mover.classList.add(newLocation);
+            // update location arrays
+            let x = player.indexOf(currentPiece.square);
+            player.splice(x, 1);
+            let y = convertSquareClassToXY(newLocation);
+            player.push(y);
+            // update the object location
+            currentPiece.square = convertSquareClassToXY(newLocation);
+            console.log(player);
+            break;
+        case "capture":
+            break;
+    }
+    gameState ++;
+}
 
 
 setUpBoard();
 
 document.addEventListener("click", function (event) {
+    console.log(event.target);
     if (event.target.matches(".piece__button")) {
         onPieceClick(event, gameState);
+    } else if (event.target.matches(".move__empty")) {
+        onOverlayClick(event, "empty");
+    } else if (event.target.matches(".move__capture")) {
+        onOverlayClick(event, "capture");;
     } else if (event.target.matches(".reset")) {
-        gameState = 1;
-        clearBoard();
-        setUpBoard();
+        resetGame();
     } else {
         if (gameState % 2 == 0) {
             gameState --;
+            clearOverlays();
         } 
     }
     displayWhoseMove(gameState);
