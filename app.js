@@ -402,6 +402,7 @@ const buildMoveArrays = (piece) => {
         opponentSpaces = whiteOccupiedSpaces;
     }
     let moves = [];
+    let captures = [];
     let result = null;
     switch (piece.ruleset) {
         case "rook":
@@ -421,7 +422,44 @@ const buildMoveArrays = (piece) => {
             }
             return checkDirectionsForBlockers(moves, playerSpaces, opponentSpaces);
         case "knight":
-            break;
+            // doesn't use directional arrays like the others, must check each of eight spots
+            if (startingPosition[0] >= 1) {
+                startingPosition[1] >= 2 ? moves.push([(startingPosition[0] - 1), (startingPosition[1] - 2)]) : null;
+                startingPosition[1] <= 5 ? moves.push([(startingPosition[0] - 1), (startingPosition[1] + 2)]) : null;
+                if (startingPosition[0] >= 2) {
+                    startingPosition[1] >= 1 ? moves.push([(startingPosition[0] - 2), (startingPosition[1] - 1)]) : null;
+                    startingPosition[1] <= 6 ? moves.push([(startingPosition[0] - 2), (startingPosition[1] + 1)]) : null;
+                }
+            }
+            if (startingPosition[0] <= 6) {
+                startingPosition[1] >= 2 ? moves.push([(startingPosition[0] + 1), (startingPosition[1] - 2)]) : null;
+                startingPosition[1] <= 5 ? moves.push([(startingPosition[0] + 1), (startingPosition[1] + 2)]) : null;
+                if (startingPosition[0] <= 5) {
+                    startingPosition[1] >= 1 ? moves.push([(startingPosition[0] + 2), (startingPosition[1] - 1)]) : null;
+                    startingPosition[1] <= 6 ? moves.push([(startingPosition[0] + 2), (startingPosition[1] + 1)]) : null;
+                }
+            }
+            console.log(moves);
+            // check for blockers / captures
+            let returnMoves = []
+            moves.forEach((move) => {
+                let emptySpace = true;
+                playerSpaces.forEach((space) => {
+                    if ((space[0] == move[0]) && (space[1] == move[1])) {
+                        emptySpace = false;
+                    }
+                });
+                opponentSpaces.forEach((space) => {
+                    if ((space[0] == move[0]) && (space[1] == move[1])) {
+                        captures.push(move)
+                    }
+                });
+                if (emptySpace) {
+                    returnMoves.push(move);
+                }
+
+            });
+            return ([returnMoves, captures]);
         case "bishop":
             // [+x+y, +x-y, -x+y, -x-y]
             moves = [[],[],[],[]];
@@ -464,7 +502,6 @@ const buildMoveArrays = (piece) => {
                 });
             })
             // check diagonals for captures
-            let captures = [];
             if (piece.colour == "white") {
                 opponentSpaces.forEach((space) => {
                     if (((startingPosition[0] + 1) === space[0]) && ((startingPosition[1] + 1) === space[1])) {
@@ -534,13 +571,11 @@ const convertSquareXYtoClass = (xy) => {
 
 const onPieceClick = (event, state) => {
     let piece = getPieceObject(event.target.id);
-    console.log(state);
+    console.log(`game state : ${state}`);
     switch (state) {
         case 1:
             if (piece.colour == "white") {
-                console.log("hello?");
                 currentPiece = piece;
-                console.log(piece);
                 let moveArrays = buildMoveArrays(piece);
                 if ((moveArrays[0].length == 0) && (moveArrays[1].length == 0)) {
                     console.log("no possible moves");

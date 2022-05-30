@@ -1,0 +1,17 @@
+handle check and mate
+
+allow selecting another piece without cancelling selection
+
+add to rulesets:
+ - castling
+ - en passante
+
+simple ai opponent.
+start screen, choose 2-player or ai-opponent.
+
+try to animate piece movements
+
+links at the bottom ( or expandable navbar )
+ - how-to-play, brings up an overlay
+ - github
+ - chess resources
