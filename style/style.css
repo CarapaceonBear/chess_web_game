@@ -100,6 +100,9 @@ body {
 .main__overlay--button:hover {
   background-color: #ae6fd5;
 }
+.main__overlay--hidden {
+  display: none;
+}
 
 .square00 {
   grid-area: 8/1/9/2;

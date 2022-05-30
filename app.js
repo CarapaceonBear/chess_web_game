@@ -1,6 +1,8 @@
 const game = document.querySelector(".main");
 const gameBoard = document.querySelector(".main__board");
 const gameDescription = document.querySelector(".header__description")
+const startScreen = document.querySelector("#start-screen");
+const endScreen = document.querySelector("#end-screen");
 const resetButton = document.querySelector(".header__reset");
 
 // TODO set up import for the pieces array
@@ -245,12 +247,7 @@ let currentPiece = null;
 let gameState = 0;
 
 const showStartOverlay = () => {
-    game.innerHTML +=
-    `<div class="main__overlay" id="start-screen">
-        <h2 class="main__overlay--text">Let's play some chess!</h2>
-        <button class="main__overlay--button" id="two-player-button">Two-Player Mode</button>
-        <button class="main__overlay--button" id="one-player-button">Play vs AI</button>
-    </div>`
+    startScreen.classList.remove("main__overlay--hidden");
 }
 
 // SOMETHING IN HERE IS CAUSING PROBLEMS WHEN CALLED FROM THE OVERLAY BUTTON
@@ -308,9 +305,9 @@ const makePiecesSelectable = (state) => {
 const resetGame = () => {
     gameState = 0;
     clearBoard();
+    clearOverlays();
     resetPiecePositions();
     showStartOverlay();
-    // setUpBoard();
 }
 
 const clearBoard = () => {
@@ -327,14 +324,8 @@ const clearOverlays = () => {
     children.forEach((child) => {
         child.remove();
     })
-    let startScreen = document.getElementById("start-screen");
-    if (startScreen != null) {
-        startScreen.remove();
-    }
-    let endMessage = document.getElementById("end-screen");
-    if (endMessage != null) {
-        endMessage.remove();
-    }
+    startScreen.classList.add("main__overlay--hidden");
+    endScreen.classList.add("main__overlay--hidden");
 }
 
 const resetPiecePositions = () => {
@@ -748,14 +739,14 @@ const onOverlayClick = (event, type) => {
 
 const endGame = (winner) => {
     gameState = 5;
-    main.innerHTML +=
-        `<div class="main__overlay" id="end-screen">
-            <h2 class="main__overlay--text">${winner} wins!</h2>
-        </div>`
-    }
+    endScreen.classList.remove("main__overlay--hidden");
+    endScreen.innerHTML = 
+        `<h2 class="main__overlay--text">
+            ${winner} wins!
+        </h2>`
+}
 
-// showStartOverlay();
-// setUpBoard();
+showStartOverlay();
 
 document.addEventListener("click", function (event) {
     if (event.target.matches(".piece__button")) {
