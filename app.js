@@ -320,7 +320,6 @@ const clearBoard = () => {
 }
 
 const clearOverlays = () => {
-    console.log("i'm clearing");
     let children = document.querySelectorAll(".move");
     children.forEach((child) => {
         child.remove();
@@ -636,7 +635,7 @@ const onPieceClick = (piece, state) => {
 }
 
 
-const onOverlayClick = (event, type) => {
+const onOverlayClick = async (event, type) => {
     let playerSpaces = null;
     let opponentSpaces = null;
     if (currentPiece.colour === "white") {
@@ -650,9 +649,10 @@ const onOverlayClick = (event, type) => {
     let oldLocationClass = convertSquareXYtoClass(currentPiece.square);
     let newLocationClass = event.target.parentElement.classList[1];
     let newLocationXY = convertSquareClassToXY(newLocationClass);
+    animateMovement(movingSprite, oldLocationClass, newLocationClass);
+    await new Promise(r => setTimeout(r, 800));
     if  (type === "capture") {
         let capturedPiece = document.querySelectorAll(`.${newLocationClass}`)[1];
-        console.log(capturedPiece);
         if (capturedPiece.id === "whiteKing") {
             endGame("Black");
             return;
@@ -686,6 +686,23 @@ const onOverlayClick = (event, type) => {
         gameState = 1;
     };
     currentPiece = null;
+    makePiecesSelectable(gameState);
+    displayWhoseMove(gameState);
+}
+
+const animateMovement = async (sprite, oldLocation, newLocation) => {
+    sprite.style.zIndex = "1";
+    startingSquare = document.querySelectorAll(`.${oldLocation}`)[0];
+    startingXY = startingSquare.getBoundingClientRect();
+    endingSquare = document.querySelectorAll(`.${newLocation}`)[0];
+    endingXY = endingSquare.getBoundingClientRect();
+    sprite.style.transform = `translateX(${endingXY.x - startingXY.x}px)`;
+    sprite.style.transform += `translateY(${endingXY.y - startingXY.y}px)`;
+    await new Promise(r => setTimeout(r, 800));
+    sprite.style.transition = "transform 0s"
+    sprite.style.transform = `translateX(0px)`;
+    sprite.style.transform += `translateY(0px)`;
+    sprite.style.zIndex = "0";
 }
 
 const endGame = (winner) => {
@@ -706,7 +723,6 @@ document.addEventListener("click", function (event) {
     if (event.target.matches(".piece__button")) {
         currentPiece = getPieceObject(event.target.id);
     }
-    console.log(gameState);
     switch (gameState) {
         case 0:
             if (event.target.matches("#two-player-button")) {
