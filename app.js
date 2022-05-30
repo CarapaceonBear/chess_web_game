@@ -403,7 +403,6 @@ const buildMoveArrays = (piece) => {
     }
     let moves = [];
     let captures = [];
-    let result = null;
     switch (piece.ruleset) {
         case "rook":
             // [right, left, up, down]
@@ -477,7 +476,33 @@ const buildMoveArrays = (piece) => {
             }
             return checkDirectionsForBlockers(moves, playerSpaces, opponentSpaces);
         case "queen":
-            break;
+            // [right, left, up, down, +x+y, +x-y, -x+y, -x-y]
+            moves = [[],[],[],[],[],[],[],[]];
+            for (let i = 1; i < (8 - startingPosition[0]); i++) {
+                moves[0].push([(startingPosition[0] + i), startingPosition[1]]);
+            }
+            for (let i = 1; i < (startingPosition[0] + 1); i++) {
+                moves[1].push([(startingPosition[0] - i), startingPosition[1]])
+            }
+            for (let i = 1; i < (8 - startingPosition[1]); i++) {
+                moves[2].push([startingPosition[0], (startingPosition[1] + i)]);
+            }
+            for (let i = 1; i < (startingPosition[1] + 1); i++) {
+                moves[3].push([startingPosition[0], (startingPosition[1] - i)]);
+            }
+            for (let i = 1; (i < (8 - startingPosition[0]) && i < (8 - startingPosition[1])); i++) {
+                moves[4].push([(startingPosition[0] + i), (startingPosition[1] + i)]);
+            }
+            for (let i = 1; (i < (8 - startingPosition[0]) && i < (startingPosition[1] + 1)); i++) {
+                moves[5].push([(startingPosition[0] + i), (startingPosition[1] - i)]);
+            }
+            for (let i = 1; (i < (startingPosition[0] + 1) && i < (8 - startingPosition[1])); i++) {
+                moves[6].push([(startingPosition[0] - i), (startingPosition[1] + i)]);
+            }
+            for (let i = 1; (i < (startingPosition[0] + 1) && i < (startingPosition[1] + 1)); i++) {
+                moves[7].push([(startingPosition[0] - i), (startingPosition[1] - i)]);
+            }
+            return checkDirectionsForBlockers(moves, playerSpaces, opponentSpaces);
         case "king":
             break;
         case "pawn":
