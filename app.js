@@ -389,7 +389,6 @@ const getPieceObject = (givenName) => {
     return pieces.find(piece => piece.name === givenName)
 }
 
-// TODO if there are no valid moves, deselect the piece
 const buildMoveArrays = (piece) => {
     let startingPosition = piece.square;
     let playerSpaces = null;
@@ -438,27 +437,7 @@ const buildMoveArrays = (piece) => {
                     startingPosition[1] <= 6 ? moves.push([(startingPosition[0] + 2), (startingPosition[1] + 1)]) : null;
                 }
             }
-            console.log(moves);
-            // check for blockers / captures
-            let returnMoves = []
-            moves.forEach((move) => {
-                let emptySpace = true;
-                playerSpaces.forEach((space) => {
-                    if ((space[0] == move[0]) && (space[1] == move[1])) {
-                        emptySpace = false;
-                    }
-                });
-                opponentSpaces.forEach((space) => {
-                    if ((space[0] == move[0]) && (space[1] == move[1])) {
-                        captures.push(move)
-                    }
-                });
-                if (emptySpace) {
-                    returnMoves.push(move);
-                }
-
-            });
-            return ([returnMoves, captures]);
+            return checkSpacesForBlockers(moves, playerSpaces, opponentSpaces);
         case "bishop":
             // [+x+y, +x-y, -x+y, -x-y]
             moves = [[],[],[],[]];
@@ -504,7 +483,20 @@ const buildMoveArrays = (piece) => {
             }
             return checkDirectionsForBlockers(moves, playerSpaces, opponentSpaces);
         case "king":
-            break;
+            // doesn't use directional arrays like the others, must check each of eight spots
+            startingPosition[0] >= 1 ? moves.push([(startingPosition[0] - 1), startingPosition[1]]) : null;
+            startingPosition[0] <= 6 ? moves.push([(startingPosition[0] + 1), startingPosition[1]]) : null;
+            startingPosition[1] >= 1 ? moves.push([startingPosition[0], (startingPosition[1] - 1)]) : null;
+            startingPosition[1] <= 6 ? moves.push([startingPosition[0], (startingPosition[1] + 1)]) : null;
+            startingPosition[0] >= 1 && startingPosition[1] >= 1 ?
+                moves.push([(startingPosition[0] - 1), (startingPosition[1] - 1)]) : null;
+            startingPosition[0] >= 1 && startingPosition[1] <= 6 ?
+                moves.push([(startingPosition[0] - 1), (startingPosition[1] + 1)]) : null;
+            startingPosition[0] <= 6 && startingPosition[1] >= 1 ?
+                moves.push([(startingPosition[0] + 1), (startingPosition[1] - 1)]) : null;
+            startingPosition[0] <= 6 && startingPosition[1] <= 6 ?
+                moves.push([(startingPosition[0] + 1), (startingPosition[1] + 1)]) : null;
+            return checkSpacesForBlockers(moves, playerSpaces, opponentSpaces);
         case "pawn":
             if (piece.colour == "white") {
                 moves.push([startingPosition[0], (startingPosition[1] + 1)]);
@@ -546,7 +538,6 @@ const buildMoveArrays = (piece) => {
             }
             return ([moves, captures]) ;
     }
-    // return result;
 }
 
 const checkDirectionsForBlockers = (array, playerSpaces, opponentSpaces) => {
@@ -554,13 +545,11 @@ const checkDirectionsForBlockers = (array, playerSpaces, opponentSpaces) => {
     let captures = [];
     moves.forEach((direction) => {
         direction.forEach((move, index) => {
-            // check against allied pieces for blockers
             playerSpaces.forEach((space) => {
                 if ((space[0] == move[0]) && (space[1] == move[1])) {
                     direction.length = index;
                 }
             });
-            // check against opponent pieces for captures
             opponentSpaces.forEach((space) => {
                 if ((space[0] == move[0]) && (space[1] == move[1])) {
                     direction.length = index;
@@ -573,8 +562,29 @@ const checkDirectionsForBlockers = (array, playerSpaces, opponentSpaces) => {
     for (i = 1; i < moves.length; i++) {
         returnMoves.push(...moves[i]);
     }
-    console.log(returnMoves);
-    console.log(captures);
+    return ([returnMoves, captures]);
+}
+
+const checkSpacesForBlockers = (array, playerSpaces, opponentSpaces) => {
+    let moves = array;
+    let returnMoves = [];
+    let captures = [];
+    moves.forEach((move) => {
+        let emptySpace = true;
+        playerSpaces.forEach((space) => {
+            if ((space[0] == move[0]) && (space[1] == move[1])) {
+                emptySpace = false;
+            }
+        });
+        opponentSpaces.forEach((space) => {
+            if ((space[0] == move[0]) && (space[1] == move[1])) {
+                captures.push(move)
+            }
+        });
+        if (emptySpace) {
+            returnMoves.push(move);
+        }
+    });
     return ([returnMoves, captures]);
 }
 
@@ -664,20 +674,12 @@ const onOverlayClick = (event, type) => {
     }
     movingSprite.classList.remove(oldLocationClass);
     movingSprite.classList.add(newLocationClass);
-    console.log("moving sprite");
-    console.log(movingSprite);
     
     let oldLocationPlayerIndex = playerSpaces.indexOf(currentPiece.square);
     playerSpaces.splice(oldLocationPlayerIndex, 1);
     playerSpaces.push(newLocationXY);
-    console.log("player spaces");
-    console.log(playerSpaces);
-    console.log("opponent spaces");
-    console.log(opponentSpaces);
-    
+
     currentPiece.square = newLocationXY;
-    console.log("current piece");
-    console.log(currentPiece);
     
     gameState ++;
     if (gameState > 4) {
