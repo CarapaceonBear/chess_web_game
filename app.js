@@ -250,11 +250,13 @@ let gameState = 0;
 const showStartOverlay = () => {
     startScreen.classList.remove("main__overlay--hidden");
     title.classList.remove("header__title--hidden");
+    resetButton.classList.add("header__reset--hidden");
 }
 
 // SOMETHING IN HERE IS CAUSING PROBLEMS WHEN CALLED FROM THE OVERLAY BUTTON
 const setUpBoard = () => {
     title.classList.add("header__title--hidden");
+    resetButton.classList.remove("header__reset--hidden");
     clearOverlays();
     gameState = 1;
     pieces.forEach((piece) => {

@@ -1,8 +1,4 @@
-move game-state click inputs up to the event listener
-
 handle check and mate
-
-mobile sizing
 
 undo?
 forfeit button
@@ -13,7 +9,6 @@ add to rulesets:
  - pawn promotion
 
 simple ai opponent.
-start screen, choose 2-player or ai-opponent.
 
 links at the bottom ( or expandable navbar )
  - how-to-play, brings up an overlay
