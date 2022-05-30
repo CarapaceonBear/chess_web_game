@@ -27,6 +27,9 @@ body {
   font-size: 48px;
   color: #272033;
 }
+.header__title--hidden {
+  display: none;
+}
 .header__description {
   font-weight: 400;
   font-size: 28px;
@@ -46,6 +49,23 @@ body {
   background-color: rgba(84, 12, 123, 0.4745098039);
 }
 
+@media screen and (max-width: 500px) {
+  .header__title {
+    display: none;
+  }
+  .header__description {
+    order: 2;
+    margin: 0.8rem;
+    font-size: 24px;
+  }
+  .header__reset {
+    margin-top: 2rem;
+    position: relative;
+    bottom: 0;
+    right: 0;
+    order: 1;
+  }
+}
 .main {
   display: flex;
   flex-direction: column;
@@ -104,6 +124,18 @@ body {
   display: none;
 }
 
+@media screen and (max-width: 434px) {
+  .main__overlay {
+    padding: 1rem 2rem;
+  }
+  .main__overlay--text {
+    text-align: center;
+    font-size: 20px;
+  }
+  .main__overlay--button {
+    font-size: 16px;
+  }
+}
 .square00 {
   grid-area: 8/1/9/2;
 }

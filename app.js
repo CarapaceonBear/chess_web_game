@@ -4,6 +4,7 @@ const gameDescription = document.querySelector(".header__description")
 const startScreen = document.querySelector("#start-screen");
 const endScreen = document.querySelector("#end-screen");
 const resetButton = document.querySelector(".header__reset");
+const title = document.querySelector(".header__title");
 
 // TODO set up import for the pieces array
 const pieces = [
@@ -248,10 +249,12 @@ let gameState = 0;
 
 const showStartOverlay = () => {
     startScreen.classList.remove("main__overlay--hidden");
+    title.classList.remove("header__title--hidden");
 }
 
 // SOMETHING IN HERE IS CAUSING PROBLEMS WHEN CALLED FROM THE OVERLAY BUTTON
 const setUpBoard = () => {
+    title.classList.add("header__title--hidden");
     clearOverlays();
     gameState = 1;
     pieces.forEach((piece) => {

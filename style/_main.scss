@@ -62,6 +62,22 @@
     }
 }
 
+// mobile layout
+@media screen and (max-width:434px) {
+    .main {
+        &__overlay {
+            padding: 1rem 2rem;
+            &--text {
+                text-align: center;
+                font-size: 20px;
+            }
+            &--button {
+                font-size: 16px;
+            }
+        }
+    }
+}
+
 .square00 {
     grid-area: 8 / 1 / 9 / 2;
 }
