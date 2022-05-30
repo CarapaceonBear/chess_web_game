@@ -9,8 +9,3 @@ add to rulesets:
  - pawn promotion
 
 simple ai opponent.
-
-links at the bottom ( or expandable navbar )
- - how-to-play, brings up an overlay
- - github
- - chess resources
