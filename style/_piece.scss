@@ -1,0 +1,64 @@
+@use "./variables" as *;
+
+.piece {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    z-index: 0;
+
+    &__image {
+        position: absolute;
+        width: 75%;
+        height: 75%;
+    }
+    &__button {
+        position: absolute;
+        width: 75%;
+        height: 75%;
+        background-color: #00000000;
+        border: none;
+
+    }
+}
+.selectable:hover .piece__button {
+    background-color: #4aff534a;
+}
+
+.move {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+    width: 100%;
+
+    z-index: 1;
+    
+    &__empty {
+        width: 80%;
+        height: 80%;
+
+        border-radius: 10%;
+        background-color: #5ab743e1;
+
+        &:hover {
+            background-color: #3cf80def;
+        }
+    }
+    &__capture {
+        width: 80%;
+        height: 80%;
+
+        border-radius: 10%;
+        background-color: #b74343e1;
+        
+        &:hover {
+            background-color: #ef1616e1;;
+        }
+    }
+}

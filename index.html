@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess in JS</title>
+    <link rel="stylesheet" href="./style/style.css">
+    <script defer src="./app.js"></script>
+    <script src="https://kit.fontawesome.com/b108659fdc.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="nav">
+        <!-- some link buttons, game reset button -->
+    </nav>
+    <header class="header">
+        <h1 class="header__title">
+            Chess in JS
+        </h1>
+        <h2 class="header__description"></h2>
+        <button class="header__reset reset">
+            <i class="fa-solid fa-arrow-rotate-left fa-2xl reset"></i>
+        </button>
+    </header>
+    <main class="main">
+        <div class="main__board">
+            <div class="main__board--black-square square00"></div>
+            <div class="main__board--white-square square10"></div>
+            <div class="main__board--black-square square20"></div>
+            <div class="main__board--white-square square30"></div>
+            <div class="main__board--black-square square40"></div>
+            <div class="main__board--white-square square50"></div>
+            <div class="main__board--black-square square60"></div>
+            <div class="main__board--white-square square70"></div>
+            <div class="main__board--white-square square01"></div>
+            <div class="main__board--black-square square11"></div>
+            <div class="main__board--white-square square21"></div>
+            <div class="main__board--black-square square31"></div>
+            <div class="main__board--white-square square41"></div>
+            <div class="main__board--black-square square51"></div>
+            <div class="main__board--white-square square61"></div>
+            <div class="main__board--black-square square71"></div>
+            <div class="main__board--black-square square02"></div>
+            <div class="main__board--white-square square12"></div>
+            <div class="main__board--black-square square22"></div>
+            <div class="main__board--white-square square32"></div>
+            <div class="main__board--black-square square42"></div>
+            <div class="main__board--white-square square52"></div>
+            <div class="main__board--black-square square62"></div>
+            <div class="main__board--white-square square72"></div>
+            <div class="main__board--white-square square03"></div>
+            <div class="main__board--black-square square13"></div>
+            <div class="main__board--white-square square23"></div>
+            <div class="main__board--black-square square33"></div>
+            <div class="main__board--white-square square43"></div>
+            <div class="main__board--black-square square53"></div>
+            <div class="main__board--white-square square63"></div>
+            <div class="main__board--black-square square73"></div>
+            <div class="main__board--black-square square04"></div>
+            <div class="main__board--white-square square14"></div>
+            <div class="main__board--black-square square24"></div>
+            <div class="main__board--white-square square34"></div>
+            <div class="main__board--black-square square44"></div>
+            <div class="main__board--white-square square54"></div>
+            <div class="main__board--black-square square64"></div>
+            <div class="main__board--white-square square74"></div>
+            <div class="main__board--white-square square05"></div>
+            <div class="main__board--black-square square15"></div>
+            <div class="main__board--white-square square25"></div>
+            <div class="main__board--black-square square35"></div>
+            <div class="main__board--white-square square45"></div>
+            <div class="main__board--black-square square55"></div>
+            <div class="main__board--white-square square65"></div>
+            <div class="main__board--black-square square75"></div>
+            <div class="main__board--black-square square06"></div>
+            <div class="main__board--white-square square16"></div>
+            <div class="main__board--black-square square26"></div>
+            <div class="main__board--white-square square36"></div>
+            <div class="main__board--black-square square46"></div>
+            <div class="main__board--white-square square56"></div>
+            <div class="main__board--black-square square66"></div>
+            <div class="main__board--white-square square76"></div>
+            <div class="main__board--white-square square07"></div>
+            <div class="main__board--black-square square17"></div>
+            <div class="main__board--white-square square27"></div>
+            <div class="main__board--black-square square37"></div>
+            <div class="main__board--white-square square47"></div>
+            <div class="main__board--black-square square57"></div>
+            <div class="main__board--white-square square67"></div>
+            <div class="main__board--black-square square77"></div>
+        </div>
+        <div class="main__overlay main__overlay--hidden" id="start-screen">
+            <h2 class="main__overlay--text">Let's play some chess!</h2>
+            <button class="main__overlay--button" id="two-player-button">Two-Player Mode</button>
+            <button class="main__overlay--button" id="one-player-button">Play vs AI</button>
+        </div>
+        <div class="main__overlay main__overlay--hidden" id="end-screen">
+        </div>
+    </main>
+    <footer>
+        <!-- credits -->
+    </footer>
+</body>
+</html>

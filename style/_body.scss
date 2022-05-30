@@ -1,0 +1,18 @@
+@use "./variables" as *;
+
+body {
+    // reset
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+    // 
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+    background-color: $background-color;
+    font-family: $primary-font;
+}
