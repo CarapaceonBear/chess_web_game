@@ -1,3 +1,4 @@
+const main = document.querySelector(".main");
 const gameBoard = document.querySelector(".main__board");
 const gameDescription = document.querySelector(".header__description")
 const resetButton = document.querySelector(".header__reset");
@@ -234,11 +235,13 @@ const whiteOccupiedSpaces = [];
 const blackOccupiedSpaces = [];
 let currentPiece = null;
 
-// game-state 
+// game-state
+//  0 : game setup
 //  1 : white piece selection
 //  2 : white move selection
 //  3 : black piece selection
 //  4 : black move selection
+//  5 : end of game
 let gameState = 1;
 
 const setUpBoard = () => {
@@ -306,6 +309,8 @@ const clearBoard = () => {
     })
     whiteOccupiedSpaces.length = 0;
     blackOccupiedSpaces.length = 0;
+    let endMessage = document.getElementById("end-screen");
+    endMessage.remove();
 }
 
 const clearOverlays = () => {
@@ -660,6 +665,14 @@ const onOverlayClick = (event, type) => {
     let newLocationXY = convertSquareClassToXY(newLocationClass);
     if  (type === "capture") {
         let capturedPiece = document.querySelectorAll(`.${newLocationClass}`)[1];
+        console.log(capturedPiece);
+        if (capturedPiece.id === "whiteKing") {
+            endGame("Black");
+            return;
+        } else if (capturedPiece.id === "blackKing") {
+            endGame("White");
+            return;
+        };
         capturedPiece.remove()
 
         newLocationXY = [parseInt(newLocationXY[0]), parseInt(newLocationXY[1])];
@@ -688,11 +701,17 @@ const onOverlayClick = (event, type) => {
     currentPiece = null;
 }
 
+const endGame = (winner) => {
+    gameState = 5;
+    main.innerHTML +=
+        `<div class="main__overlay" id="end-screen">
+            <h2 class="main__overlay--text">${winner} wins!</h2>
+        </div>`
+    }
 
 setUpBoard();
 
 document.addEventListener("click", function (event) {
-    console.log(event.target);
     if (event.target.matches(".piece__button")) {
         onPieceClick(event, gameState);
     } else if (event.target.matches(".move__empty")) {
@@ -702,7 +721,7 @@ document.addEventListener("click", function (event) {
     } else if (event.target.matches(".reset")) {
         resetGame();
     } else {
-        if (gameState % 2 == 0) {
+        if (gameState == 2 || gameState == 4) {
             gameState --;
             clearOverlays();
         } 

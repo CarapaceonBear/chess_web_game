@@ -1,3 +1,4 @@
+win-state
 handle check and mate
 
 allow selecting another piece without cancelling selection

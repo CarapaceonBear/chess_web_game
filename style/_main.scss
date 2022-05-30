@@ -5,6 +5,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
 
     &__board {
         width: 80vw;
@@ -25,6 +26,18 @@
         &--white-square {
             position: static;
             background-color: $white-color;
+        }
+    }
+    &__overlay {
+        position: absolute;
+        background-color: $background-color;
+        padding: 2rem 4rem;
+        border: 5px solid $foreground-color;
+        border-radius: 1rem;
+
+        &--text {
+            font-weight: $font-bold;
+            font-size: 32px;
         }
     }
 }

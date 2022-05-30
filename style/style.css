@@ -51,6 +51,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 .main__board {
   width: 80vw;
@@ -70,6 +71,17 @@ body {
 .main__board--white-square {
   position: static;
   background-color: #cdbee6;
+}
+.main__overlay {
+  position: absolute;
+  background-color: #ddd5e2;
+  padding: 2rem 4rem;
+  border: 5px solid #272033;
+  border-radius: 1rem;
+}
+.main__overlay--text {
+  font-weight: 700;
+  font-size: 32px;
 }
 
 .square00 {
