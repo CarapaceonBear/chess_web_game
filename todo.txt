@@ -1,11 +1,16 @@
-win-state
+move game-state click inputs up to the event listener
+
 handle check and mate
 
-allow selecting another piece without cancelling selection
+mobile sizing
+
+undo?
+forfeit button
 
 add to rulesets:
  - castling
  - en passante
+ - pawn promotion
 
 simple ai opponent.
 start screen, choose 2-player or ai-opponent.

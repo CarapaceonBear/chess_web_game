@@ -73,6 +73,11 @@ body {
   background-color: #cdbee6;
 }
 .main__overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
   position: absolute;
   background-color: #ddd5e2;
   padding: 2rem 4rem;
@@ -82,6 +87,18 @@ body {
 .main__overlay--text {
   font-weight: 700;
   font-size: 32px;
+}
+.main__overlay--button {
+  font-family: "Josefin Sans", sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  background-color: #b8a3c5;
+  border: 2px solid #272033;
+  border-radius: 5px;
+  padding: 8px 15px;
+}
+.main__overlay--button:hover {
+  background-color: #ae6fd5;
 }
 
 .square00 {

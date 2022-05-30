@@ -1,4 +1,4 @@
-const main = document.querySelector(".main");
+const game = document.querySelector(".main");
 const gameBoard = document.querySelector(".main__board");
 const gameDescription = document.querySelector(".header__description")
 const resetButton = document.querySelector(".header__reset");
@@ -242,10 +242,21 @@ let currentPiece = null;
 //  3 : black piece selection
 //  4 : black move selection
 //  5 : end of game
-let gameState = 1;
+let gameState = 0;
 
+const showStartOverlay = () => {
+    game.innerHTML +=
+    `<div class="main__overlay" id="start-screen">
+        <h2 class="main__overlay--text">Let's play some chess!</h2>
+        <button class="main__overlay--button" id="two-player-button">Two-Player Mode</button>
+        <button class="main__overlay--button" id="one-player-button">Play vs AI</button>
+    </div>`
+}
+
+// SOMETHING IN HERE IS CAUSING PROBLEMS WHEN CALLED FROM THE OVERLAY BUTTON
 const setUpBoard = () => {
-    console.log("setting up the board");
+    clearOverlays();
+    gameState = 1;
     pieces.forEach((piece) => {
         spawnPiece(piece);
         if (piece.colour === "white") {
@@ -295,11 +306,11 @@ const makePiecesSelectable = (state) => {
 }
 
 const resetGame = () => {
-    gameState = 1;
+    gameState = 0;
     clearBoard();
-    clearOverlays();
     resetPiecePositions();
-    setUpBoard();
+    showStartOverlay();
+    // setUpBoard();
 }
 
 const clearBoard = () => {
@@ -309,8 +320,6 @@ const clearBoard = () => {
     })
     whiteOccupiedSpaces.length = 0;
     blackOccupiedSpaces.length = 0;
-    let endMessage = document.getElementById("end-screen");
-    endMessage.remove();
 }
 
 const clearOverlays = () => {
@@ -318,6 +327,14 @@ const clearOverlays = () => {
     children.forEach((child) => {
         child.remove();
     })
+    let startScreen = document.getElementById("start-screen");
+    if (startScreen != null) {
+        startScreen.remove();
+    }
+    let endMessage = document.getElementById("end-screen");
+    if (endMessage != null) {
+        endMessage.remove();
+    }
 }
 
 const resetPiecePositions = () => {
@@ -375,6 +392,9 @@ const spawnOverlay = (xy, type) => {
 
 const displayWhoseMove = (gameState) => {
     switch (gameState) {
+        case 0:
+            gameDescription.innerText = "";
+            break;
         case 1:
             gameDescription.innerText = "White piece selection";
             break;
@@ -387,6 +407,8 @@ const displayWhoseMove = (gameState) => {
         case 4:
             gameDescription.innerText = "Black move choice";
             break;
+        case 5:
+            gameDescription.innerText = "";
     }
 }
 
@@ -611,7 +633,6 @@ const convertSquareXYtoClass = (xy) => {
 
 const onPieceClick = (event, state) => {
     let piece = getPieceObject(event.target.id);
-    console.log(`game state : ${state}`);
     switch (state) {
         case 1:
             if (piece.colour == "white") {
@@ -628,6 +649,18 @@ const onPieceClick = (event, state) => {
             }
             break;
         case 2:
+            if (piece.colour == "white") {
+                clearOverlays();
+                currentPiece = piece;
+                let moveArrays = buildMoveArrays(piece);
+                if ((moveArrays[0].length == 0) && (moveArrays[1].length == 0)) {
+                    console.log("no possible moves");
+                    gameState = 1;
+                    currentPiece = null;
+                    return;
+                }
+                displayMoves(moveArrays);
+            }
             break;
         case 3:
             if (piece.colour == "black") {
@@ -644,6 +677,18 @@ const onPieceClick = (event, state) => {
             }
             break;
         case 4:
+            if (piece.colour == "black") {
+                clearOverlays();
+                currentPiece = piece;
+                let moveArrays = buildMoveArrays(piece);
+                if ((moveArrays[0].length == 0) && (moveArrays[1].length == 0)) {
+                    console.log("no possible moves");
+                    gameState = 3;
+                    currentPiece = null;
+                    return;
+                }
+                displayMoves(moveArrays);
+            }
             break;
     }
 }
@@ -709,7 +754,8 @@ const endGame = (winner) => {
         </div>`
     }
 
-setUpBoard();
+// showStartOverlay();
+// setUpBoard();
 
 document.addEventListener("click", function (event) {
     if (event.target.matches(".piece__button")) {
@@ -720,6 +766,10 @@ document.addEventListener("click", function (event) {
         onOverlayClick(event, "capture");;
     } else if (event.target.matches(".reset")) {
         resetGame();
+    } else if (event.target.matches("#two-player-button")) {
+        setUpBoard();
+    } else if (event.target.matches("#one-player-button")) {
+        alert("I haven't made that yet!")
     } else {
         if (gameState == 2 || gameState == 4) {
             gameState --;
