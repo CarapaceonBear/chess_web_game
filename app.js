@@ -774,10 +774,10 @@ const onOverlayClick = async (event, type) => {
     if  (type === "capture") {
         let capturedPiece = document.querySelectorAll(`.${newLocationClass}`)[1];
         if (capturedPiece.id === "whiteKing") {
-            endGame("Black");
+            endGame(1, 1);
             return;
         } else if (capturedPiece.id === "blackKing") {
-            endGame("White");
+            endGame(0, 1);
             return;
         };
         capturedPiece.remove()
@@ -805,6 +805,7 @@ const onOverlayClick = async (event, type) => {
     if (gameState > 4) {
         gameState = 1;
     };
+    checkIfHaveMoves(gameState, opponentSpaces, playerSpaces);
     currentPiece = null;
     makePiecesSelectable(gameState);
     displayWhoseMove(gameState);
@@ -825,13 +826,64 @@ const animateMovement = async (sprite, oldLocation, newLocation) => {
     sprite.style.zIndex = "0";
 }
 
-const endGame = (winner) => {
+const checkIfHaveMoves = (state, opponentSpaces, playerSpaces) => {
+    console.log("checking for moves");
+    let canPlay = false
+    let spritesOnBoard = document.querySelectorAll(".piece");
+    switch (state) {
+        case 1:
+            spritesOnBoard = Array.from(spritesOnBoard).filter((piece) => {
+                return piece.id[0] == "w";
+            })
+            break;
+        case 3:
+            spritesOnBoard = Array.from(spritesOnBoard).filter((piece) => {
+                return piece.id[0] == "b";
+            })
+            break;
+    }
+    spritesOnBoard.forEach((sprite) => {
+        currentPiece = getPieceObject(sprite.id);
+        let moveArrays = buildMoveArrays(currentPiece, opponentSpaces, playerSpaces);
+        moveArrays = checkIfKingInDanger(moveArrays, opponentSpaces, playerSpaces);
+        if ((moveArrays[0].length > 0) || (moveArrays[1].length > 0)) {
+            canPlay = true;
+        }
+        console.log(moveArrays);
+    });
+    console.log(canPlay);
+    if (! canPlay) {
+        if (state == 1) {
+            endGame(0, 2)
+        } else if (state == 3) {
+            endGame(1, 2)
+        }
+    }
+}
+
+const endGame = (who, type) => {
+    let winner = ["White", "Black"];
+    let opponent = ["Black", "White"];
     gameState = 5;
-    endScreen.classList.remove("main__overlay--hidden");
-    endScreen.innerHTML = 
-        `<h2 class="main__overlay--text">
-            ${winner} wins!
-        </h2>`
+    switch (type) {
+        case 1:
+            endScreen.classList.remove("main__overlay--hidden");
+            endScreen.innerHTML = 
+                `<h2 class="main__overlay--text">
+                    ${winner[who]} wins!
+                </h2>`
+            break;
+        case 2:
+            endScreen.classList.remove("main__overlay--hidden");
+            endScreen.innerHTML = 
+                `<h2 class="main__overlay--text">
+                    ${winner[who]} has no possible moves. 
+                </h2>
+                <h2 class="main__overlay--text">
+                    ${opponent[who]} wins! 
+                </h2>`
+            break; 
+    }
 }
 
 showStartOverlay();
