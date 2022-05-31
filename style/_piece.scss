@@ -24,11 +24,12 @@
         height: 75%;
         background-color: #00000000;
         border: none;
+        border-radius: 10%;
 
     }
 }
 .selectable:hover .piece__button {
-    background-color: #4aff534a;
+    background-color: #5ab743e1;
 }
 
 .move {

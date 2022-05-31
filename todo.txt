@@ -8,6 +8,4 @@ add to rulesets:
  - en passante
  - pawn promotion
 
-import pieces array
-
 simple ai opponent.

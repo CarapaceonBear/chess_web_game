@@ -13,6 +13,7 @@ const pieces = [...pieceArray];
 const whiteOccupiedSpaces = [];
 const blackOccupiedSpaces = [];
 let currentPiece = null;
+let isPieceMoving = false;
 
 // game-state
 //  0 : game setup
@@ -588,6 +589,7 @@ const onOverlayClick = async (event, type) => {
 }
 
 const animateMovement = async (sprite, oldLocation, newLocation) => {
+    isPieceMoving = true;
     sprite.style.zIndex = "1";
     let startingSquare = document.querySelectorAll(`.${oldLocation}`)[0];
     let startingXY = startingSquare.getBoundingClientRect();
@@ -600,6 +602,7 @@ const animateMovement = async (sprite, oldLocation, newLocation) => {
     sprite.style.transform = `translateX(0px)`;
     sprite.style.transform += `translateY(0px)`;
     sprite.style.zIndex = "0";
+    isPieceMoving = false;
 }
 
 const checkIfHaveMoves = (state, opponentSpaces, playerSpaces) => {
@@ -662,66 +665,68 @@ const endGame = (who, type) => {
 showStartOverlay();
 
 document.addEventListener("click", function (event) {
-    if (event.target.matches(".reset")) {
-        resetGame();
-    }
-    if (event.target.matches(".piece__button")) {
-        currentPiece = getPieceObject(event.target.id);
-    }
-    switch (gameState) {
-        case 0:
-            if (event.target.matches("#two-player-button")) {
-                setUpBoard();
-            } else if (event.target.matches("#one-player-button")) {
-                alert("I haven't made that yet!")
-            }
-            break;
-        case 1:
-            if ((event.target.matches(".piece__button")) 
-            && (getPieceObject(event.target.id).colour == "white")) {
-                onPieceClick(currentPiece, 1);
-            }
-            break;
-        case 2:
-            clearOverlays();
-            if ((event.target.matches(".piece__button")) 
-            && (getPieceObject(event.target.id).colour == "white")) {
-                onPieceClick(currentPiece, 1);
-            }
-            if (event.target.matches(".move__empty")) {
-                onOverlayClick(event, "empty");
-            } else if (event.target.matches(".move__capture")) {
-                onOverlayClick(event, "capture");
-            } else {
-                gameState --;
-                currentPiece = null;
+    if (! isPieceMoving) {
+        if (event.target.matches(".reset")) {
+            resetGame();
+        }
+        if (event.target.matches(".piece__button")) {
+            currentPiece = getPieceObject(event.target.id);
+        }
+        switch (gameState) {
+            case 0:
+                if (event.target.matches("#two-player-button")) {
+                    setUpBoard();
+                } else if (event.target.matches("#one-player-button")) {
+                    alert("I haven't made that yet!")
+                }
+                break;
+            case 1:
+                if ((event.target.matches(".piece__button")) 
+                && (getPieceObject(event.target.id).colour == "white")) {
+                    onPieceClick(currentPiece, 1);
+                }
+                break;
+            case 2:
                 clearOverlays();
-            }
-            break;
-        case 3:
-            if ((event.target.matches(".piece__button")) 
-            && (currentPiece.colour == "black")) {
-                onPieceClick(currentPiece, 3);
-            }
-            break;
-        case 4:
-            clearOverlays();
-            if ((event.target.matches(".piece__button")) 
-            && (currentPiece.colour == "black")) {
-                onPieceClick(currentPiece, 3);
-            } else if (event.target.matches(".move__empty")) {
-                onOverlayClick(event, "empty");
-            } else if (event.target.matches(".move__capture")) {
-                onOverlayClick(event, "capture");
-            } else {
-                gameState --;
-                currentPiece = null;
+                if ((event.target.matches(".piece__button")) 
+                && (getPieceObject(event.target.id).colour == "white")) {
+                    onPieceClick(currentPiece, 1);
+                }
+                if (event.target.matches(".move__empty")) {
+                    onOverlayClick(event, "empty");
+                } else if (event.target.matches(".move__capture")) {
+                    onOverlayClick(event, "capture");
+                } else {
+                    gameState --;
+                    currentPiece = null;
+                    clearOverlays();
+                }
+                break;
+            case 3:
+                if ((event.target.matches(".piece__button")) 
+                && (currentPiece.colour == "black")) {
+                    onPieceClick(currentPiece, 3);
+                }
+                break;
+            case 4:
                 clearOverlays();
-            }
-            break;
-        case 5:
-            break;
+                if ((event.target.matches(".piece__button")) 
+                && (currentPiece.colour == "black")) {
+                    onPieceClick(currentPiece, 3);
+                } else if (event.target.matches(".move__empty")) {
+                    onOverlayClick(event, "empty");
+                } else if (event.target.matches(".move__capture")) {
+                    onOverlayClick(event, "capture");
+                } else {
+                    gameState --;
+                    currentPiece = null;
+                    clearOverlays();
+                }
+                break;
+            case 5:
+                break;
+        }
+        makePiecesSelectable(gameState);
+        displayWhoseMove(gameState);
     }
-    makePiecesSelectable(gameState);
-    displayWhoseMove(gameState);
 });
