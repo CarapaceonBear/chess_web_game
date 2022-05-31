@@ -6,7 +6,6 @@ const endScreen = document.querySelector("#end-screen");
 const resetButton = document.querySelector(".header__reset");
 const title = document.querySelector(".header__title");
 
-// TODO set up import for the pieces array
 const pieces = [
     {
         name: "whiteRookOne",
@@ -253,7 +252,6 @@ const showStartOverlay = () => {
     resetButton.classList.add("header__reset--hidden");
 }
 
-// SOMETHING IN HERE IS CAUSING PROBLEMS WHEN CALLED FROM THE OVERLAY BUTTON
 const setUpBoard = () => {
     title.classList.add("header__title--hidden");
     resetButton.classList.remove("header__reset--hidden");
@@ -412,17 +410,8 @@ const getPieceObject = (givenName) => {
     return pieces.find(piece => piece.name === givenName)
 }
 
-const buildMoveArrays = (piece) => {
+const buildMoveArrays = (piece, playerSpaces, opponentSpaces) => {
     let startingPosition = piece.square;
-    let playerSpaces = null;
-    let opponentSpaces = null;
-    if (piece.colour === "white") {
-        playerSpaces = whiteOccupiedSpaces;
-        opponentSpaces = blackOccupiedSpaces;
-    } else {
-        playerSpaces = blackOccupiedSpaces;
-        opponentSpaces = whiteOccupiedSpaces;
-    }
     let moves = [];
     let captures = [];
     switch (piece.ruleset) {
@@ -559,7 +548,7 @@ const buildMoveArrays = (piece) => {
                     }
                 });
             }
-            return ([moves, captures]) ;
+            return ([moves, captures]);
     }
 }
 
@@ -611,6 +600,98 @@ const checkSpacesForBlockers = (array, playerSpaces, opponentSpaces) => {
     return ([returnMoves, captures]);
 }
 
+// NEED TO MODIFY IF KING IS THE ONE MOVING
+const checkIfKingInDanger = (moveArray, playerSpaces, opponentSpaces) => {
+    let finalMoves = [];
+    let finalCaptures = [];
+    moveArray[0].forEach((move) => {
+        let isCheck = false;
+        // potential board state, as arrays
+        let newPlayerBoard = playerSpaces.filter((space) => {
+            return space != currentPiece.square
+        });
+        newPlayerBoard.push(move);
+        // current active pieces
+        let spritesOnBoard = document.querySelectorAll(".piece");
+        if (currentPiece.colour === "white") {
+            spritesOnBoard = Array.from(spritesOnBoard).filter((piece) => {
+                return piece.id[0] == "b";
+            })
+        } else {
+            spritesOnBoard = Array.from(spritesOnBoard).filter((piece) => {
+                return piece.id[0] == "w";
+            })
+        }
+        // possible piece moves, do they threaten the king?
+        spritesOnBoard.forEach((sprite) => {
+            let piece = getPieceObject(sprite.id);
+            let moveArrays = buildMoveArrays(piece, opponentSpaces, newPlayerBoard);
+            if (moveArrays[1].length > 0) {
+                moveArrays[1].forEach((capture) => {
+                    if (currentPiece.colour === "white") {
+                        if ((capture[0] == pieces[4].square[0]) && (capture[1] == pieces[4].square[1])) {
+                            isCheck = true;
+                        }
+                    } else {
+                        if ((capture[0] == pieces[20].square[0]) && (capture[1] == pieces[20].square[1])) {
+                            isCheck = true;
+                        }
+                    }
+                })
+
+            }
+        })
+        ! isCheck ? finalMoves.push(move) : null;
+    })
+
+    moveArray[1].forEach((capture) => {
+        let isCheck = false;
+        // potential board state, as arrays
+        let newPlayerBoard = playerSpaces.filter((space) => {
+            return space != currentPiece.square
+        });
+        newPlayerBoard.push(capture);
+        let newOpponentBoard = opponentSpaces.filter((space) => {
+            return ((space[0] != capture[0]) || (space[1] != capture[1]));
+        });
+        // current active pieces
+        let spritesOnBoard = document.querySelectorAll(".piece");
+        if (currentPiece.colour === "white") {
+            spritesOnBoard = Array.from(spritesOnBoard).filter((piece) => {
+                return piece.id[0] == "b";
+            })
+        } else {
+            spritesOnBoard = Array.from(spritesOnBoard).filter((piece) => {
+                return piece.id[0] == "w";
+            })
+        }
+        let captureClass = convertSquareXYtoClass(capture);
+        let capturedPiece = document.querySelectorAll(`.${captureClass}`)[1];
+        spritesOnBoard.splice(spritesOnBoard.indexOf(capturedPiece), 1);
+        // possible piece moves, do they threaten the king?
+        spritesOnBoard.forEach((sprite) => {
+            let piece = getPieceObject(sprite.id);
+            let moveArrays = buildMoveArrays(piece, newOpponentBoard, newPlayerBoard);
+            if (moveArrays[1].length > 0) {
+                moveArrays[1].forEach((captureX) => {
+                    if (currentPiece.colour === "white") {
+                        if ((captureX[0] == pieces[4].square[0]) && (captureX[1] == pieces[4].square[1])) {
+                            isCheck = true;
+                        }
+                    } else {
+                        if ((captureX[0] == pieces[20].square[0]) && (captureX[1] == pieces[20].square[1])) {
+                            isCheck = true;
+                        }
+                    }
+                })
+
+            }
+        })
+        ! isCheck ? finalCaptures.push(capture) : null;
+    });
+    return ([finalMoves, finalCaptures]);
+}
+
 const displayMoves = (moves) => {
     moves[0].forEach((move) => {
         spawnOverlay(move, "empty");
@@ -629,7 +710,17 @@ const convertSquareXYtoClass = (xy) => {
 
 const onPieceClick = (piece, state) => {
     gameState = state;
-    let moveArrays = buildMoveArrays(piece);
+    let playerSpaces = null;
+    let opponentSpaces = null;
+    if (piece.colour === "white") {
+        playerSpaces = whiteOccupiedSpaces;
+        opponentSpaces = blackOccupiedSpaces;
+    } else {
+        playerSpaces = blackOccupiedSpaces;
+        opponentSpaces = whiteOccupiedSpaces;
+    }
+    let moveArrays = buildMoveArrays(piece, playerSpaces, opponentSpaces);
+    moveArrays = checkIfKingInDanger(moveArrays, playerSpaces, opponentSpaces);
     if ((moveArrays[0].length == 0) && (moveArrays[1].length == 0)) {
         console.log("no possible moves");
         currentPiece = null;
