@@ -1,241 +1,19 @@
+import { pieceArray } from "./data/pieces.js";
+
 const game = document.querySelector(".main");
 const gameBoard = document.querySelector(".main__board");
 const gameDescription = document.querySelector(".header__description")
 const startScreen = document.querySelector("#start-screen");
 const endScreen = document.querySelector("#end-screen");
 const resetButton = document.querySelector(".header__reset");
+const title = document.querySelector(".header__title");
 
-// TODO set up import for the pieces array
-const pieces = [
-    {
-        name: "whiteRookOne",
-        colour: "white",
-        square: [0,0],
-        ruleset: "rook",
-        image: "chess_piece_2_white_rook.png"
-    },
-    {
-        name: "whiteKnightOne",
-        colour: "white",
-        square: [1,0],
-        ruleset: "knight",
-        image: "chess_piece_2_white_knight.png"
-    },
-    {
-        name: "whiteBishopOne",
-        colour: "white",
-        square: [2,0],
-        ruleset: "bishop",
-        image: "chess_piece_2_white_bishop.png"
-    },
-    {
-        name: "whiteQueen",
-        colour: "white",
-        square: [3,0],
-        ruleset: "queen",
-        image: "chess_piece_2_white_queen.png"
-    },
-    {
-        name: "whiteKing",
-        colour: "white",
-        square: [4,0],
-        ruleset: "king",
-        image: "chess_piece_2_white_king.png"
-    },
-    {
-        name: "whiteBishopTwo",
-        colour: "white",
-        square: [5,0],
-        ruleset: "bishop",
-        image: "chess_piece_2_white_bishop.png"
-    },
-    {
-        name: "whiteKnightTwo",
-        colour: "white",
-        square: [6,0],
-        ruleset: "knight",
-        image: "chess_piece_2_white_knight.png"
-    },
-    {
-        name: "whiteRookTwo",
-        colour: "white",
-        square: [7,0],
-        ruleset: "rook",
-        image: "chess_piece_2_white_rook.png"
-    },
-    {
-        name: "whitePawnOne",
-        colour: "white",
-        square: [0,1],
-        ruleset: "pawn",
-        image: "chess_piece_2_white_pawn.png"
-    },
-    {
-        name: "whitePawnTwo",
-        colour: "white",
-        square: [1,1],
-        ruleset: "pawn",
-        image: "chess_piece_2_white_pawn.png"
-    },
-    {
-        name: "whitePawnThree",
-        colour: "white",
-        square: [2,1],
-        ruleset: "pawn",
-        image: "chess_piece_2_white_pawn.png"
-    },
-    {
-        name: "whitePawnFour",
-        colour: "white",
-        square: [3,1],
-        ruleset: "pawn",
-        image: "chess_piece_2_white_pawn.png"
-    },
-    {
-        name: "whitePawnFive",
-        colour: "white",
-        square: [4,1],
-        ruleset: "pawn",
-        image: "chess_piece_2_white_pawn.png"
-    },
-    {
-        name: "whitePawnSix",
-        colour: "white",
-        square: [5,1],
-        ruleset: "pawn",
-        image: "chess_piece_2_white_pawn.png"
-    },
-    {
-        name: "whitePawnSeven",
-        colour: "white",
-        square: [6,1],
-        ruleset: "pawn",
-        image: "chess_piece_2_white_pawn.png"
-    },
-    {
-        name: "whitePawnEight",
-        colour: "white",
-        square: [7,1],
-        ruleset: "pawn",
-        image: "chess_piece_2_white_pawn.png"
-    },
-    {
-        name: "blackRookOne",
-        colour: "black",
-        square: [0,7],
-        ruleset: "rook",
-        image: "chess_piece_2_black_rook.png"
-    },
-    {
-        name: "blackKnightOne",
-        colour: "black",
-        square: [1,7],
-        ruleset: "knight",
-        image: "chess_piece_2_black_knight.png"
-    },
-    {
-        name: "blackBishopOne",
-        colour: "black",
-        square: [2,7],
-        ruleset: "bishop",
-        image: "chess_piece_2_black_bishop.png"
-    },
-    {
-        name: "blackQueen",
-        colour: "black",
-        square: [3,7],
-        ruleset: "queen",
-        image: "chess_piece_2_black_queen.png"
-    },
-    {
-        name: "blackKing",
-        colour: "black",
-        square: [4,7],
-        ruleset: "king",
-        image: "chess_piece_2_black_king.png"
-    },
-    {
-        name: "blackBishopTwo",
-        colour: "black",
-        square: [5,7],
-        ruleset: "bishop",
-        image: "chess_piece_2_black_bishop.png"
-    },
-    {
-        name: "blackKnightTwo",
-        colour: "black",
-        square: [6,7],
-        ruleset: "knight",
-        image: "chess_piece_2_black_knight.png"
-    },
-    {
-        name: "blackRookTwo",
-        colour: "black",
-        square: [7,7],
-        ruleset: "rook",
-        image: "chess_piece_2_black_rook.png"
-    },
-    {
-        name: "blackPawnOne",
-        colour: "black",
-        square: [0,6],
-        ruleset: "pawn",
-        image: "chess_piece_2_black_pawn.png"
-    },
-    {
-        name: "blackPawnTwo",
-        colour: "black",
-        square: [1,6],
-        ruleset: "pawn",
-        image: "chess_piece_2_black_pawn.png"
-    },
-    {
-        name: "blackPawnThree",
-        colour: "black",
-        square: [2,6],
-        ruleset: "pawn",
-        image: "chess_piece_2_black_pawn.png"
-    },
-    {
-        name: "blackPawnFour",
-        colour: "black",
-        square: [3,6],
-        ruleset: "pawn",
-        image: "chess_piece_2_black_pawn.png"
-    },
-    {
-        name: "blackPawnFive",
-        colour: "black",
-        square: [4,6],
-        ruleset: "pawn",
-        image: "chess_piece_2_black_pawn.png"
-    },
-    {
-        name: "blackPawnSix",
-        colour: "black",
-        square: [5,6],
-        ruleset: "pawn",
-        image: "chess_piece_2_black_pawn.png"
-    },
-    {
-        name: "blackPawnSeven",
-        colour: "black",
-        square: [6,6],
-        ruleset: "pawn",
-        image: "chess_piece_2_black_pawn.png"
-    },
-    {
-        name: "blackPawnEight",
-        colour: "black",
-        square: [7,6],
-        ruleset: "pawn",
-        image: "chess_piece_2_black_pawn.png"
-    }
-];
+const pieces = [...pieceArray];
 
 const whiteOccupiedSpaces = [];
 const blackOccupiedSpaces = [];
 let currentPiece = null;
+let isPieceMoving = false;
 
 // game-state
 //  0 : game setup
@@ -248,10 +26,13 @@ let gameState = 0;
 
 const showStartOverlay = () => {
     startScreen.classList.remove("main__overlay--hidden");
+    title.classList.remove("header__title--hidden");
+    resetButton.classList.add("header__reset--hidden");
 }
 
-// SOMETHING IN HERE IS CAUSING PROBLEMS WHEN CALLED FROM THE OVERLAY BUTTON
 const setUpBoard = () => {
+    title.classList.add("header__title--hidden");
+    resetButton.classList.remove("header__reset--hidden");
     clearOverlays();
     gameState = 1;
     pieces.forEach((piece) => {
@@ -399,7 +180,7 @@ const displayWhoseMove = (gameState) => {
             gameDescription.innerText = "Black move choice";
             break;
         case 5:
-            gameDescription.innerText = "";
+            gameDescription.innerText = "Game concluded";
     }
 }
 
@@ -407,17 +188,8 @@ const getPieceObject = (givenName) => {
     return pieces.find(piece => piece.name === givenName)
 }
 
-const buildMoveArrays = (piece) => {
+const buildMoveArrays = (piece, playerSpaces, opponentSpaces) => {
     let startingPosition = piece.square;
-    let playerSpaces = null;
-    let opponentSpaces = null;
-    if (piece.colour === "white") {
-        playerSpaces = whiteOccupiedSpaces;
-        opponentSpaces = blackOccupiedSpaces;
-    } else {
-        playerSpaces = blackOccupiedSpaces;
-        opponentSpaces = whiteOccupiedSpaces;
-    }
     let moves = [];
     let captures = [];
     switch (piece.ruleset) {
@@ -554,7 +326,7 @@ const buildMoveArrays = (piece) => {
                     }
                 });
             }
-            return ([moves, captures]) ;
+            return ([moves, captures]);
     }
 }
 
@@ -577,7 +349,7 @@ const checkDirectionsForBlockers = (array, playerSpaces, opponentSpaces) => {
         });
     })
     let returnMoves = moves[0];
-    for (i = 1; i < moves.length; i++) {
+    for (let i = 1; i < moves.length; i++) {
         returnMoves.push(...moves[i]);
     }
     return ([returnMoves, captures]);
@@ -606,6 +378,121 @@ const checkSpacesForBlockers = (array, playerSpaces, opponentSpaces) => {
     return ([returnMoves, captures]);
 }
 
+const checkIfKingInDanger = (moveArray, playerSpaces, opponentSpaces) => {
+    let finalMoves = [];
+    let finalCaptures = [];
+    moveArray[0].forEach((move) => {
+        let isCheck = false;
+        // potential board state, as arrays
+        let newPlayerBoard = playerSpaces.filter((space) => {
+            return space != currentPiece.square
+        });
+        newPlayerBoard.push(move);
+        // current active pieces
+        let spritesOnBoard = document.querySelectorAll(".piece");
+        if (currentPiece.colour === "white") {
+            spritesOnBoard = Array.from(spritesOnBoard).filter((piece) => {
+                return piece.id[0] == "b";
+            })
+        } else {
+            spritesOnBoard = Array.from(spritesOnBoard).filter((piece) => {
+                return piece.id[0] == "w";
+            })
+        }
+        // possible piece moves, do they threaten the king?
+        spritesOnBoard.forEach((sprite) => {
+            let piece = getPieceObject(sprite.id);
+            let moveArrays = buildMoveArrays(piece, opponentSpaces, newPlayerBoard);
+            if (moveArrays[1].length > 0) {
+                moveArrays[1].forEach((capture) => {
+                    if (currentPiece.colour === "white") {
+                        if (currentPiece.ruleset === "king") {
+                            if ((capture[0] == move[0]) && (capture[1] == move[1])) {
+                                isCheck = true;
+                            }
+                        } else {
+                            if ((capture[0] == pieces[4].square[0]) && (capture[1] == pieces[4].square[1])) {
+                                isCheck = true;
+                            }
+                        }
+                    } else {
+                        if (currentPiece.ruleset === "king") {
+                            if ((capture[0] == move[0]) && (capture[1] == move[1])) {
+                                isCheck = true;
+                            }
+                        } else {
+                            if ((capture[0] == pieces[20].square[0]) && (capture[1] == pieces[20].square[1])) {
+                                isCheck = true;
+                            }
+                        }
+                    }
+                })
+
+            }
+        })
+        ! isCheck ? finalMoves.push(move) : null;
+    })
+
+    moveArray[1].forEach((capture) => {
+        let isCheck = false;
+        // potential board state, as arrays
+        let newPlayerBoard = playerSpaces.filter((space) => {
+            return space != currentPiece.square
+        });
+        newPlayerBoard.push(capture);
+        let newOpponentBoard = opponentSpaces.filter((space) => {
+            return ((space[0] != capture[0]) || (space[1] != capture[1]));
+        });
+        // current active pieces
+        let spritesOnBoard = document.querySelectorAll(".piece");
+        if (currentPiece.colour === "white") {
+            spritesOnBoard = Array.from(spritesOnBoard).filter((piece) => {
+                return piece.id[0] == "b";
+            })
+        } else {
+            spritesOnBoard = Array.from(spritesOnBoard).filter((piece) => {
+                return piece.id[0] == "w";
+            })
+        }
+        let captureClass = convertSquareXYtoClass(capture);
+        let capturedPiece = document.querySelectorAll(`.${captureClass}`)[1];
+        spritesOnBoard.splice(spritesOnBoard.indexOf(capturedPiece), 1);
+        // possible piece moves, do they threaten the king?
+        spritesOnBoard.forEach((sprite) => {
+            let piece = getPieceObject(sprite.id);
+            let moveArrays = buildMoveArrays(piece, newOpponentBoard, newPlayerBoard);
+            if (moveArrays[1].length > 0) {
+                moveArrays[1].forEach((captureX) => {
+                    if (currentPiece.colour === "white") {
+                        if (currentPiece.ruleset === "king") {
+                            if ((capture[0] == captureX[0]) && (capture[1] == captureX[1])) {
+                                isCheck = true;
+                            }
+                        } else {
+                            if ((captureX[0] == pieces[4].square[0]) && (captureX[1] == pieces[4].square[1])) {
+                                isCheck = true;
+                            }
+                        }
+                    } else {
+                        if (currentPiece.ruleset === "king") {
+                            if ((capture[0] == captureX[0]) && (capture[1] == captureX[1])) {
+                                isCheck = true;
+                            }
+                        } else {
+                            if ((captureX[0] == pieces[20].square[0]) && (captureX[1] == pieces[20].square[1])) {
+                                isCheck = true;
+                            }
+                        }
+                    }
+                })
+
+            }
+        })
+        ! isCheck ? finalCaptures.push(capture) : null;
+    });
+    return ([finalMoves, finalCaptures]);
+}
+
 const displayMoves = (moves) => {
     moves[0].forEach((move) => {
         spawnOverlay(move, "empty");
@@ -622,70 +509,30 @@ const convertSquareXYtoClass = (xy) => {
     return `square${xy[0]}${xy[1]}`
 }
 
-const onPieceClick = (event, state) => {
-    let piece = getPieceObject(event.target.id);
-    switch (state) {
-        case 1:
-            if (piece.colour == "white") {
-                currentPiece = piece;
-                let moveArrays = buildMoveArrays(piece);
-                if ((moveArrays[0].length == 0) && (moveArrays[1].length == 0)) {
-                    console.log("no possible moves");
-                    gameState = 1;
-                    currentPiece = null;
-                    return;
-                }
-                displayMoves(moveArrays);
-                gameState ++;
-            }
-            break;
-        case 2:
-            if (piece.colour == "white") {
-                clearOverlays();
-                currentPiece = piece;
-                let moveArrays = buildMoveArrays(piece);
-                if ((moveArrays[0].length == 0) && (moveArrays[1].length == 0)) {
-                    console.log("no possible moves");
-                    gameState = 1;
-                    currentPiece = null;
-                    return;
-                }
-                displayMoves(moveArrays);
-            }
-            break;
-        case 3:
-            if (piece.colour == "black") {
-                currentPiece = piece;
-                let moveArrays = buildMoveArrays(piece);
-                if ((moveArrays[0].length == 0) && (moveArrays[1].length == 0)) {
-                    console.log("no possible moves");
-                    gameState = 3;
-                    currentPiece = null;
-                    return;
-                }
-                displayMoves(moveArrays);
-                gameState ++;
-            }
-            break;
-        case 4:
-            if (piece.colour == "black") {
-                clearOverlays();
-                currentPiece = piece;
-                let moveArrays = buildMoveArrays(piece);
-                if ((moveArrays[0].length == 0) && (moveArrays[1].length == 0)) {
-                    console.log("no possible moves");
-                    gameState = 3;
-                    currentPiece = null;
-                    return;
-                }
-                displayMoves(moveArrays);
-            }
-            break;
+const onPieceClick = (piece, state) => {
+    gameState = state;
+    let playerSpaces = null;
+    let opponentSpaces = null;
+    if (piece.colour === "white") {
+        playerSpaces = whiteOccupiedSpaces;
+        opponentSpaces = blackOccupiedSpaces;
+    } else {
+        playerSpaces = blackOccupiedSpaces;
+        opponentSpaces = whiteOccupiedSpaces;
     }
+    let moveArrays = buildMoveArrays(piece, playerSpaces, opponentSpaces);
+    moveArrays = checkIfKingInDanger(moveArrays, playerSpaces, opponentSpaces);
+    if ((moveArrays[0].length == 0) && (moveArrays[1].length == 0)) {
+        console.log("no possible moves");
+        currentPiece = null;
+        return;
+    }
+    displayMoves(moveArrays);
+    gameState ++;
 }
 
-const onOverlayClick = (event, type) => {
-    clearOverlays();
+
+const onOverlayClick = async (event, type) => {
     let playerSpaces = null;
     let opponentSpaces = null;
     if (currentPiece.colour === "white") {
@@ -699,14 +546,15 @@ const onOverlayClick = (event, type) => {
     let oldLocationClass = convertSquareXYtoClass(currentPiece.square);
     let newLocationClass = event.target.parentElement.classList[1];
     let newLocationXY = convertSquareClassToXY(newLocationClass);
+    animateMovement(movingSprite, oldLocationClass, newLocationClass);
+    await new Promise(r => setTimeout(r, 600));
     if  (type === "capture") {
         let capturedPiece = document.querySelectorAll(`.${newLocationClass}`)[1];
-        console.log(capturedPiece);
         if (capturedPiece.id === "whiteKing") {
-            endGame("Black");
+            endGame(1, 1);
             return;
         } else if (capturedPiece.id === "blackKing") {
-            endGame("White");
+            endGame(0, 1);
             return;
         };
         capturedPiece.remove()
@@ -734,39 +582,151 @@ const onOverlayClick = (event, type) => {
     if (gameState > 4) {
         gameState = 1;
     };
+    checkIfHaveMoves(gameState, opponentSpaces, playerSpaces);
     currentPiece = null;
+    makePiecesSelectable(gameState);
+    displayWhoseMove(gameState);
 }
 
-const endGame = (winner) => {
+const animateMovement = async (sprite, oldLocation, newLocation) => {
+    isPieceMoving = true;
+    sprite.style.zIndex = "1";
+    let startingSquare = document.querySelectorAll(`.${oldLocation}`)[0];
+    let startingXY = startingSquare.getBoundingClientRect();
+    let endingSquare = document.querySelectorAll(`.${newLocation}`)[0];
+    let endingXY = endingSquare.getBoundingClientRect();
+    sprite.style.transform = `translateX(${endingXY.x - startingXY.x}px)`;
+    sprite.style.transform += `translateY(${endingXY.y - startingXY.y}px)`;
+    await new Promise(r => setTimeout(r, 600));
+    sprite.style.transition = "transform 0s"
+    sprite.style.transform = `translateX(0px)`;
+    sprite.style.transform += `translateY(0px)`;
+    sprite.style.zIndex = "0";
+    isPieceMoving = false;
+}
+
+const checkIfHaveMoves = (state, opponentSpaces, playerSpaces) => {
+    let canPlay = false
+    let spritesOnBoard = document.querySelectorAll(".piece");
+    switch (state) {
+        case 1:
+            spritesOnBoard = Array.from(spritesOnBoard).filter((piece) => {
+                return piece.id[0] == "w";
+            })
+            break;
+        case 3:
+            spritesOnBoard = Array.from(spritesOnBoard).filter((piece) => {
+                return piece.id[0] == "b";
+            })
+            break;
+    }
+    spritesOnBoard.forEach((sprite) => {
+        currentPiece = getPieceObject(sprite.id);
+        let moveArrays = buildMoveArrays(currentPiece, opponentSpaces, playerSpaces);
+        moveArrays = checkIfKingInDanger(moveArrays, opponentSpaces, playerSpaces);
+        if ((moveArrays[0].length > 0) || (moveArrays[1].length > 0)) {
+            canPlay = true;
+        }
+    });
+    if (! canPlay) {
+        if (state == 1) {
+            endGame(0, 2)
+        } else if (state == 3) {
+            endGame(1, 2)
+        }
+    }
+}
+
+const endGame = (who, type) => {
+    let winner = ["White", "Black"];
+    let opponent = ["Black", "White"];
     gameState = 5;
-    endScreen.classList.remove("main__overlay--hidden");
-    endScreen.innerHTML = 
-        `<h2 class="main__overlay--text">
-            ${winner} wins!
-        </h2>`
+    switch (type) {
+        case 1:
+            endScreen.classList.remove("main__overlay--hidden");
+            endScreen.innerHTML = 
+                `<h2 class="main__overlay--text">
+                    ${winner[who]} wins!
+                </h2>`
+            break;
+        case 2:
+            endScreen.classList.remove("main__overlay--hidden");
+            endScreen.innerHTML = 
+                `<h2 class="main__overlay--text">
+                    ${winner[who]} has no possible moves. 
+                </h2>
+                <h2 class="main__overlay--text">
+                    ${opponent[who]} wins! 
+                </h2>`
+            break; 
+    }
 }
 
 showStartOverlay();
 
 document.addEventListener("click", function (event) {
-    if (event.target.matches(".piece__button")) {
-        onPieceClick(event, gameState);
-    } else if (event.target.matches(".move__empty")) {
-        onOverlayClick(event, "empty");
-    } else if (event.target.matches(".move__capture")) {
-        onOverlayClick(event, "capture");;
-    } else if (event.target.matches(".reset")) {
-        resetGame();
-    } else if (event.target.matches("#two-player-button")) {
-        setUpBoard();
-    } else if (event.target.matches("#one-player-button")) {
-        alert("I haven't made that yet!")
-    } else {
-        if (gameState == 2 || gameState == 4) {
-            gameState --;
-            clearOverlays();
-        } 
+    if (! isPieceMoving) {
+        if (event.target.matches(".reset")) {
+            resetGame();
+        }
+        if (event.target.matches(".piece__button")) {
+            currentPiece = getPieceObject(event.target.id);
+        }
+        switch (gameState) {
+            case 0:
+                if (event.target.matches("#two-player-button")) {
+                    setUpBoard();
+                } else if (event.target.matches("#one-player-button")) {
+                    alert("I haven't made that yet!")
+                }
+                break;
+            case 1:
+                if ((event.target.matches(".piece__button")) 
+                && (getPieceObject(event.target.id).colour == "white")) {
+                    onPieceClick(currentPiece, 1);
+                }
+                break;
+            case 2:
+                clearOverlays();
+                if ((event.target.matches(".piece__button")) 
+                && (getPieceObject(event.target.id).colour == "white")) {
+                    onPieceClick(currentPiece, 1);
+                }
+                if (event.target.matches(".move__empty")) {
+                    onOverlayClick(event, "empty");
+                } else if (event.target.matches(".move__capture")) {
+                    onOverlayClick(event, "capture");
+                } else {
+                    gameState --;
+                    currentPiece = null;
+                    clearOverlays();
+                }
+                break;
+            case 3:
+                if ((event.target.matches(".piece__button")) 
+                && (currentPiece.colour == "black")) {
+                    onPieceClick(currentPiece, 3);
+                }
+                break;
+            case 4:
+                clearOverlays();
+                if ((event.target.matches(".piece__button")) 
+                && (currentPiece.colour == "black")) {
+                    onPieceClick(currentPiece, 3);
+                } else if (event.target.matches(".move__empty")) {
+                    onOverlayClick(event, "empty");
+                } else if (event.target.matches(".move__capture")) {
+                    onOverlayClick(event, "capture");
+                } else {
+                    gameState --;
+                    currentPiece = null;
+                    clearOverlays();
+                }
+                break;
+            case 5:
+                break;
+        }
+        makePiecesSelectable(gameState);
+        displayWhoseMove(gameState);
     }
-    makePiecesSelectable(gameState);
-    displayWhoseMove(gameState);
 });

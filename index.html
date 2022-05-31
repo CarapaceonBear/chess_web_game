@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess in JS</title>
     <link rel="stylesheet" href="./style/style.css">
-    <script defer src="./app.js"></script>
+    <script defer type="module" src="./app.js"></script>
     <script src="https://kit.fontawesome.com/b108659fdc.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -14,7 +14,7 @@
         <!-- some link buttons, game reset button -->
     </nav>
     <header class="header">
-        <h1 class="header__title">
+        <h1 class="header__title header__title--hidden">
             Chess in JS
         </h1>
         <h2 class="header__description"></h2>
@@ -97,8 +97,17 @@
         <div class="main__overlay main__overlay--hidden" id="end-screen">
         </div>
     </main>
-    <footer>
-        <!-- credits -->
+    <footer class="footer">
+        <a href="https://lichess.org/practice" class="footer__link">Learn how to play chess</a>
+        <a href="https://www.chessprogramming.org/Main_Page" class="footer__link">Chess Programming Wiki</a>
+        <div class="footer__github" id="github">
+            <a href="https://github.com/CarapaceonBear/chess_web_game">
+                <button class="footer__github--button" id="github-button">
+                    <i class="fa-brands fa-github fa-2xl"></i>
+                </button>
+            </a>
+        </div>
+        <a href="https://opengameart.org/content/chess-pieces-and-board-squares" class="footer__link">Chess Pieces Artwork, by John Pablok (adapted from Cburnett) CC-BY-SA 3.0</a>
     </footer>
 </body>
 </html>
