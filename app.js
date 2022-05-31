@@ -629,12 +629,24 @@ const checkIfKingInDanger = (moveArray, playerSpaces, opponentSpaces) => {
             if (moveArrays[1].length > 0) {
                 moveArrays[1].forEach((capture) => {
                     if (currentPiece.colour === "white") {
-                        if ((capture[0] == pieces[4].square[0]) && (capture[1] == pieces[4].square[1])) {
-                            isCheck = true;
+                        if (currentPiece.ruleset === "king") {
+                            if ((capture[0] == move[0]) && (capture[1] == move[1])) {
+                                isCheck = true;
+                            }
+                        } else {
+                            if ((capture[0] == pieces[4].square[0]) && (capture[1] == pieces[4].square[1])) {
+                                isCheck = true;
+                            }
                         }
                     } else {
-                        if ((capture[0] == pieces[20].square[0]) && (capture[1] == pieces[20].square[1])) {
-                            isCheck = true;
+                        if (currentPiece.ruleset === "king") {
+                            if ((capture[0] == move[0]) && (capture[1] == move[1])) {
+                                isCheck = true;
+                            }
+                        } else {
+                            if ((capture[0] == pieces[20].square[0]) && (capture[1] == pieces[20].square[1])) {
+                                isCheck = true;
+                            }
                         }
                     }
                 })
@@ -675,12 +687,24 @@ const checkIfKingInDanger = (moveArray, playerSpaces, opponentSpaces) => {
             if (moveArrays[1].length > 0) {
                 moveArrays[1].forEach((captureX) => {
                     if (currentPiece.colour === "white") {
-                        if ((captureX[0] == pieces[4].square[0]) && (captureX[1] == pieces[4].square[1])) {
-                            isCheck = true;
+                        if (currentPiece.ruleset === "king") {
+                            if ((capture[0] == captureX[0]) && (capture[1] == captureX[1])) {
+                                isCheck = true;
+                            }
+                        } else {
+                            if ((captureX[0] == pieces[4].square[0]) && (captureX[1] == pieces[4].square[1])) {
+                                isCheck = true;
+                            }
                         }
                     } else {
-                        if ((captureX[0] == pieces[20].square[0]) && (captureX[1] == pieces[20].square[1])) {
-                            isCheck = true;
+                        if (currentPiece.ruleset === "king") {
+                            if ((capture[0] == captureX[0]) && (capture[1] == captureX[1])) {
+                                isCheck = true;
+                            }
+                        } else {
+                            if ((captureX[0] == pieces[20].square[0]) && (captureX[1] == pieces[20].square[1])) {
+                                isCheck = true;
+                            }
                         }
                     }
                 })
