@@ -23,6 +23,10 @@ let isPieceMoving = false;
 //  4 : black move selection
 //  5 : end of game
 let gameState = 0;
+// ai-state
+//  0 : off
+//  1 : playing
+let aiState = 0;
 
 const showStartOverlay = () => {
     startScreen.classList.remove("main__overlay--hidden");
@@ -66,19 +70,24 @@ const makePiecesSelectable = (state) => {
             })
             break;
         case 3:
-            pieces.forEach((piece) => {
-                let id = piece.id.substring(0, 5);
-                if (id == "black") {
-                    piece.classList.add("selectable");
-                } else {
-                    piece.classList.remove("selectable");
-                }
-            });
+            if (aiState == 0) {
+                pieces.forEach((piece) => {
+                    let id = piece.id.substring(0, 5);
+                    if (id == "black") {
+                        piece.classList.add("selectable");
+                    } else {
+                        piece.classList.remove("selectable");
+                    }
+                });
+            }
             break;
         case 4:
-            pieces.forEach((piece) => {
-                piece.classList.remove("selectable");
-            })
+            if (aiState == 0) {
+                pieces.forEach((piece) => {
+                    piece.classList.remove("selectable");
+                })
+
+            }
             break;
     }
 }
@@ -584,6 +593,9 @@ const onOverlayClick = async (event, type) => {
     };
     checkIfHaveMoves(gameState, opponentSpaces, playerSpaces);
     currentPiece = null;
+    if (aiState == 1) {
+        handleAiMove();
+    }
     makePiecesSelectable(gameState);
     displayWhoseMove(gameState);
 }
@@ -637,6 +649,109 @@ const checkIfHaveMoves = (state, opponentSpaces, playerSpaces) => {
     }
 }
 
+const handleAiMove = () => {
+    // store current board value
+    let currentPlayerValue = 1290;
+    // store moving piece
+    let movingSprite = null
+    let movingPiece = null;
+    // store move / capture
+    let potentialMove = null;
+    let isCapture = false;
+
+    // GENERATE POSSIBLE MOVES
+    let spritesOnBoard = document.querySelectorAll(".piece");
+    let aiSprites = Array.from(spritesOnBoard).filter((sprite) => {
+        return sprite.id[0] == "b";
+    })
+    let playerSprites = Array.from(spritesOnBoard).filter((sprite) => {
+        return sprite.id[0] == "w";
+    })
+    let aiPieces = aiSprites.map((sprite) => getPieceObject(sprite.id));
+    let playerPieces = playerSprites.map((sprite) => getPieceObject(sprite.id));
+    aiPieces.forEach((piece, index) => {
+        let moveArrays = buildMoveArrays(piece, blackOccupiedSpaces, whiteOccupiedSpaces);
+        // EVALUATE POSSIBLE CAPTURES
+        moveArrays[1].forEach((capture) => {
+            console.log("there is a capture");
+            let futurePlayerSprites = playerSprites.filter((sprite) => {
+                return ((getPieceObject(sprite.id).square[0] != capture[0]) || (getPieceObject(sprite.id).square[1] != capture[1]));
+            })
+            console.log(futurePlayerSprites);
+            let pointValue = 0;
+            futurePlayerSprites.forEach((futureSprite) => {
+                switch (futureSprite.id.slice(5, 9)) {
+                    case "pawn":
+                        pointValue += 10;
+                        break;
+                    case "knig":
+                    case "bish":
+                        pointValue += 30;
+                        break;
+                    case "rook":
+                        pointValue += 50;
+                        break;
+                    case "quee":
+                        pointValue += 90;
+                        break;
+                    case "king":
+                        pointValue += 900;
+                        break;
+                }
+            })
+            if (pointValue < currentPlayerValue) {
+                isCapture = true;
+                currentPlayerValue = pointValue;
+                movingSprite = aiSprites[index];
+                movingPiece = piece;
+                potentialMove = capture;
+            }
+        })
+    })
+    // no capture? random move
+    if (currentPlayerValue == 1290) {
+        console.log("random move");
+        let aiPieceMovers = [];
+        aiPieces.forEach((piece) => {
+            let moveArrays = buildMoveArrays(piece, blackOccupiedSpaces, whiteOccupiedSpaces);
+            if (moveArrays[0].length > 0) {
+                aiPieceMovers.push(1);
+            } else {
+                aiPieceMovers.push(0);
+            }
+        });
+        let howManyMoves = aiPieceMovers.reduce((total, current) => total + current);
+        let randomMover = Math.ceil(Math.random() * howManyMoves);
+        let randomIndex = aiPieceMovers.join("").split(1, randomMover).join(1).length;
+        movingSprite = aiSprites[randomIndex];
+        movingPiece = aiPieces[randomIndex];
+        let randomPieceMoves = buildMoveArrays(aiPieces[randomIndex], blackOccupiedSpaces, whiteOccupiedSpaces);
+        potentialMove = randomPieceMoves[0][Math.floor(Math.random() * randomPieceMoves[0].length)];
+        console.log(movingPiece);
+        console.log(potentialMove);
+    }
+
+
+    // MAKE THE MOVE
+    if (isCapture) {
+        let capturedPiece = document.querySelectorAll(`.${convertSquareXYtoClass(potentialMove)}`)[1];
+        capturedPiece.remove()
+        let captureIndex = whiteOccupiedSpaces.indexOf(potentialMove);
+        whiteOccupiedSpaces.splice(captureIndex, 1);
+    }
+
+    movingSprite.classList.remove(convertSquareXYtoClass(movingPiece.square));
+    movingSprite.classList.add(convertSquareXYtoClass(potentialMove));
+
+    let oldLocationIndex = blackOccupiedSpaces.indexOf(movingPiece.square);
+    movingPiece.square = convertSquareXYtoClass(potentialMove);
+
+    blackOccupiedSpaces.splice(oldLocationIndex, 1);
+    blackOccupiedSpaces.push(potentialMove);
+
+    gameState = 1;
+}
+
 const endGame = (who, type) => {
     let winner = ["White", "Black"];
     let opponent = ["Black", "White"];
@@ -677,7 +792,8 @@ document.addEventListener("click", function (event) {
                 if (event.target.matches("#two-player-button")) {
                     setUpBoard();
                 } else if (event.target.matches("#one-player-button")) {
-                    alert("I haven't made that yet!")
+                    aiState = 1;
+                    setUpBoard();
                 }
                 break;
             case 1:
@@ -703,24 +819,28 @@ document.addEventListener("click", function (event) {
                 }
                 break;
             case 3:
-                if ((event.target.matches(".piece__button")) 
-                && (currentPiece.colour == "black")) {
-                    onPieceClick(currentPiece, 3);
+                if (aiState == 0) {
+                    if ((event.target.matches(".piece__button")) 
+                    && (currentPiece.colour == "black")) {
+                        onPieceClick(currentPiece, 3);
+                    }
                 }
                 break;
             case 4:
-                clearOverlays();
-                if ((event.target.matches(".piece__button")) 
-                && (currentPiece.colour == "black")) {
-                    onPieceClick(currentPiece, 3);
-                } else if (event.target.matches(".move__empty")) {
-                    onOverlayClick(event, "empty");
-                } else if (event.target.matches(".move__capture")) {
-                    onOverlayClick(event, "capture");
-                } else {
-                    gameState --;
-                    currentPiece = null;
+                if (aiState == 0) {
                     clearOverlays();
+                    if ((event.target.matches(".piece__button")) 
+                    && (currentPiece.colour == "black")) {
+                        onPieceClick(currentPiece, 3);
+                    } else if (event.target.matches(".move__empty")) {
+                        onOverlayClick(event, "empty");
+                    } else if (event.target.matches(".move__capture")) {
+                        onOverlayClick(event, "capture");
+                    } else {
+                        gameState --;
+                        currentPiece = null;
+                        clearOverlays();
+                    }
                 }
                 break;
             case 5:
