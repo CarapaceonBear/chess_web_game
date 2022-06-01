@@ -667,19 +667,20 @@ const handleAiMove = () => {
     let playerSprites = Array.from(spritesOnBoard).filter((sprite) => {
         return sprite.id[0] == "w";
     })
-    let aiPieces = aiSprites.map((sprite) => getPieceObject(sprite.id))
-    aiPieces.forEach((piece) => {
+    let aiPieces = aiSprites.map((sprite) => getPieceObject(sprite.id));
+    let playerPieces = playerSprites.map((sprite) => getPieceObject(sprite.id));
+    aiPieces.forEach((piece, index) => {
         let moveArrays = buildMoveArrays(piece, blackOccupiedSpaces, whiteOccupiedSpaces);
-        // EVALUATE THE OUTCOMES
-        // just captures for now
+        // EVALUATE POSSIBLE CAPTURES
         moveArrays[1].forEach((capture) => {
-            let futurePlayerPieces = playerPieces.filter((sprite) => {
-                return getPieceObject(sprite.id).square != capture;
+            console.log("there is a capture");
+            let futurePlayerSprites = playerSprites.filter((sprite) => {
+                return ((getPieceObject(sprite.id).square[0] != capture[0]) || (getPieceObject(sprite.id).square[1] != capture[1]));
             })
+            console.log(futurePlayerSprites);
             let pointValue = 0;
-            futurePlayerPieces.forEach((piece) => {
-                console.log(piece.id.splice(5, 4));
-                switch (piece.id.splice(5, 4)) {
+            futurePlayerSprites.forEach((futureSprite) => {
+                switch (futureSprite.id.slice(5, 9)) {
                     case "pawn":
                         pointValue += 10;
                         break;
@@ -699,14 +700,17 @@ const handleAiMove = () => {
                 }
             })
             if (pointValue < currentPlayerValue) {
+                isCapture = true;
                 currentPlayerValue = pointValue;
-                movingPiece = sprite;
+                movingSprite = aiSprites[index];
+                movingPiece = piece;
                 potentialMove = capture;
             }
         })
     })
     // no capture? random move
     if (currentPlayerValue == 1290) {
+        console.log("random move");
         let aiPieceMovers = [];
         aiPieces.forEach((piece) => {
             let moveArrays = buildMoveArrays(piece, blackOccupiedSpaces, whiteOccupiedSpaces);
@@ -722,8 +726,7 @@ const handleAiMove = () => {
         movingSprite = aiSprites[randomIndex];
         movingPiece = aiPieces[randomIndex];
         let randomPieceMoves = buildMoveArrays(aiPieces[randomIndex], blackOccupiedSpaces, whiteOccupiedSpaces);
-        potentialMove = randomPieceMoves[0][Math.floor(Math.random() * randomPieceMoves.length)];
-        console.log(movingSprite);
+        potentialMove = randomPieceMoves[0][Math.floor(Math.random() * randomPieceMoves[0].length)];
         console.log(movingPiece);
         console.log(potentialMove);
     }
@@ -731,22 +734,20 @@ const handleAiMove = () => {
 
     // MAKE THE MOVE
     if (isCapture) {
-        let capturedPiece = document.querySelectorAll(potentialMove)[1];
+        let capturedPiece = document.querySelectorAll(`.${convertSquareXYtoClass(potentialMove)}`)[1];
         capturedPiece.remove()
-        // and remove from array
+        let captureIndex = whiteOccupiedSpaces.indexOf(potentialMove);
+        whiteOccupiedSpaces.splice(captureIndex, 1);
     }
 
     movingSprite.classList.remove(convertSquareXYtoClass(movingPiece.square));
     movingSprite.classList.add(convertSquareXYtoClass(potentialMove));
-    // update piece object
+
     let oldLocationIndex = blackOccupiedSpaces.indexOf(movingPiece.square);
     movingPiece.square = convertSquareXYtoClass(potentialMove);
-    // update array
 
     blackOccupiedSpaces.splice(oldLocationIndex, 1);
     blackOccupiedSpaces.push(potentialMove);
-
-    console.log(blackOccupiedSpaces);
 
     gameState = 1;
 }
