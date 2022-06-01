@@ -34,6 +34,7 @@ body {
   font-weight: 400;
   font-size: 28px;
   color: #272033;
+  text-align: center;
 }
 .header__reset {
   position: absolute;
@@ -110,6 +111,7 @@ body {
 .main__overlay--text {
   font-weight: 700;
   font-size: 32px;
+  text-align: center;
 }
 .main__overlay--button {
   font-family: "Josefin Sans", sans-serif;
@@ -487,5 +489,6 @@ body {
   .footer__link {
     padding: 0.6rem;
     font-size: 14px;
+    text-align: center;
   }
 }/*# sourceMappingURL=style.css.map */
