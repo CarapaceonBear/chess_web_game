@@ -1,6 +1,19 @@
 # chess_web_game
 ## Javascript implementation of chess
 -----------------------------------------------------------------------------------------------
+![look](https://i.imgur.com/TD46qaj.png)<br>
+
+A game of chess, written in Javascript. Inputs a mouse-based or touch-based. When a piece is selected, it shows an overlay of possible moves. These moves are pruned if such a move puts the king directly in danger. Clicking the overlay makes the move occur.<br>
+If it is a player's turn, and they cannot make a move, they will lose the game.<br>
+It can be played with 2-players using one screen, or 1-player against a <i>very</i> basic ai opponent.<br>
+
+Still to do:
+- Better AI decision-making.
+- More advanced rules: castling, pawn promotion, en passant.
+- Forfeit button.
+- Undo.
+
+-----------------------------------------------------------------------------------------------
 ## Initial Design
 The board will be a CSS grid display.<br>
 Each piece will be a HTML div, with an image and a button, with a class dictating its grid-area.<br>
