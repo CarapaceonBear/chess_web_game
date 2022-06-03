@@ -28,25 +28,32 @@ body {
   color: #272033;
   text-align: center;
 }
-.header__reset {
+.header__button-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
   position: absolute;
   bottom: 1rem;
   right: 1rem;
+}
+.header__button {
   background-color: rgba(255, 255, 255, 0);
   height: 3rem;
   width: 3rem;
   border-radius: 1.5rem;
   border: none;
+  position: relative;
 }
-.header__reset--hidden {
+.header__button--hidden {
   display: none;
 }
-.header__reset:hover {
+.header__button:hover {
   background-color: rgba(84, 12, 123, 0.4745098039);
 }
-.header__reset--text {
+.header__button--text {
   position: absolute;
-  bottom: -0.6rem;
+  bottom: -0.65rem;
   right: 0;
   font-family: "Josefin Sans", sans-serif;
   background-color: #ddd5e2;
@@ -64,12 +71,12 @@ body {
     margin: 0.8rem;
     font-size: 24px;
   }
-  .header__reset {
+  .header__button-box {
     margin-top: 2rem;
     position: relative;
     bottom: 0;
     right: 0;
-    order: 1;
+    order: 0;
   }
 }
 .main {

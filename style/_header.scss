@@ -16,20 +16,24 @@
         color: $foreground-color;
         text-align: center;
     }
-    &__reset {
+    &__button-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+
         position: absolute;
         bottom: 1rem;
         right: 1rem;
+    }
 
-        // display: flex;
-        // justify-content: center;
-        // align-items: center;
-
+    &__button {
         background-color: #ffffff00;
         height: 3rem;
         width: 3rem;
         border-radius: 1.5rem;
         border: none;
+        position: relative;
 
         &--hidden {
             display: none;
@@ -41,7 +45,7 @@
 
         &--text {
             position: absolute;
-            bottom: -0.6rem;
+            bottom: -0.65rem;
             right: 0;
 
             font-family: $primary-font;
@@ -66,12 +70,12 @@
             margin: .8rem;
             font-size: 24px;
         }
-        &__reset {
+        &__button-box {
             margin-top: 2rem;
             position: relative;
             bottom: 0;
             right: 0;
-            order: 1;
+            order: 0;
         }
     }
 }

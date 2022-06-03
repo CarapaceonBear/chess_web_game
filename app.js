@@ -6,6 +6,7 @@ const gameDescription = document.querySelector(".header__description")
 const startScreen = document.querySelector("#start-screen");
 const endScreen = document.querySelector("#end-screen");
 const resetButton = document.querySelector(".header__reset");
+const forfeitButton = document.querySelector(".header__forfeit");
 
 const pieces = [...pieceArray];
 
@@ -29,11 +30,13 @@ let aiState = 0;
 
 const showStartOverlay = () => {
     startScreen.classList.remove("main__overlay--hidden");
-    resetButton.classList.add("header__reset--hidden");
+    resetButton.classList.add("header__button--hidden");
+    forfeitButton.classList.add("header__button--hidden");
 }
 
 const setUpBoard = () => {
-    resetButton.classList.remove("header__reset--hidden");
+    resetButton.classList.remove("header__button--hidden");
+    forfeitButton.classList.remove("header__button--hidden")
     clearOverlays();
     gameState = 1;
     pieces.forEach((piece) => {
@@ -762,7 +765,7 @@ const handleAiMove = async () => {
 }
 
 const endGame = (who, type) => {
-    let winner = ["White", "Black"];
+    let player = ["White", "Black"];
     let opponent = ["Black", "White"];
     gameState = 5;
     switch (type) {
@@ -770,19 +773,29 @@ const endGame = (who, type) => {
             endScreen.classList.remove("main__overlay--hidden");
             endScreen.innerHTML = 
                 `<h2 class="main__overlay--text">
-                    ${winner[who]} wins!
+                    ${player[who]} wins!
                 </h2>`
             break;
         case 2:
             endScreen.classList.remove("main__overlay--hidden");
             endScreen.innerHTML = 
                 `<h2 class="main__overlay--text">
-                    ${winner[who]} has no possible moves. 
+                    ${player[who]} has no possible moves. 
                 </h2>
                 <h2 class="main__overlay--text">
                     ${opponent[who]} wins! 
                 </h2>`
             break; 
+        case 3:
+            endScreen.classList.remove("main__overlay--hidden");
+            endScreen.innerHTML = 
+            `<h2 class="main__overlay--text">
+                ${player[who]} forfeits the match. 
+            </h2>
+            <h2 class="main__overlay--text">
+                ${opponent[who]} wins! 
+            </h2>`
+        break; 
     }
 }
 
@@ -792,12 +805,29 @@ document.addEventListener("click", function (event) {
     console.log(event.target);
     if (! isPieceMoving) {
         if (event.target.matches(".reset")) {
-            resetButton.innerHTML += `<h3 class="header__reset--text">Reset Game</h3>`
+            resetButton.innerHTML += `<h3 class="header__button--text reset-text">Reset Game</h3>`
         } else {
             resetButton.innerHTML = `<i class="fa-solid fa-arrow-rotate-left fa-2xl reset"></i>`
         }
-        if (event.target.matches(".header__reset--text")) {
+        if (event.target.matches(".forfeit")) {
+            forfeitButton.innerHTML += `<h3 class="header__button--text forfeit-text">Forfeit Match</h3>`
+        } else {
+            forfeitButton.innerHTML = `<i class="fa-regular fa-flag fa-2xl forfeit"></i>`
+        }
+        if (event.target.matches(".reset-text")) {
             resetGame();
+        }
+        if (event.target.matches(".forfeit-text")) {
+            switch (gameState) {
+                case 1:
+                case 2:
+                    endGame(0, 3);
+                    break;
+                case 3:
+                case 4:
+                    endGame(1, 3);
+                    break;
+            }
         }
         if (event.target.matches(".piece__button")) {
             currentPiece = getPieceObject(event.target.id);
