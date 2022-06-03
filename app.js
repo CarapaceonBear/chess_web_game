@@ -6,7 +6,7 @@ const gameDescription = document.querySelector(".header__description")
 const startScreen = document.querySelector("#start-screen");
 const endScreen = document.querySelector("#end-screen");
 const resetButton = document.querySelector(".header__reset");
-const title = document.querySelector(".header__title");
+const forfeitButton = document.querySelector(".header__forfeit");
 
 const pieces = [...pieceArray];
 
@@ -30,13 +30,13 @@ let aiState = 0;
 
 const showStartOverlay = () => {
     startScreen.classList.remove("main__overlay--hidden");
-    title.classList.remove("header__title--hidden");
-    resetButton.classList.add("header__reset--hidden");
+    resetButton.classList.add("header__button--hidden");
+    forfeitButton.classList.add("header__button--hidden");
 }
 
 const setUpBoard = () => {
-    title.classList.add("header__title--hidden");
-    resetButton.classList.remove("header__reset--hidden");
+    resetButton.classList.remove("header__button--hidden");
+    forfeitButton.classList.remove("header__button--hidden")
     clearOverlays();
     gameState = 1;
     pieces.forEach((piece) => {
@@ -540,7 +540,6 @@ const onPieceClick = (piece, state) => {
     gameState ++;
 }
 
-
 const onOverlayClick = async (event, type) => {
     let playerSpaces = null;
     let opponentSpaces = null;
@@ -649,17 +648,7 @@ const checkIfHaveMoves = (state, opponentSpaces, playerSpaces) => {
     }
 }
 
-const handleAiMove = () => {
-    // store current board value
-    let currentPlayerValue = 1290;
-    // store moving piece
-    let movingSprite = null
-    let movingPiece = null;
-    // store move / capture
-    let potentialMove = null;
-    let isCapture = false;
-
-    // GENERATE POSSIBLE MOVES
+const handleAiMove = async () => {
     let spritesOnBoard = document.querySelectorAll(".piece");
     let aiSprites = Array.from(spritesOnBoard).filter((sprite) => {
         return sprite.id[0] == "b";
@@ -667,53 +656,82 @@ const handleAiMove = () => {
     let playerSprites = Array.from(spritesOnBoard).filter((sprite) => {
         return sprite.id[0] == "w";
     })
+    let currentPlayerValue = 0
+    playerSprites.forEach((sprite) => {
+        switch (sprite.id.slice(5, 9)) {
+            case "Pawn":
+                currentPlayerValue += 10;
+                break;
+            case "Knig":
+            case "Bish":
+                currentPlayerValue += 30;
+                break;
+            case "Rook":
+                currentPlayerValue += 50;
+                break;
+            case "Quee":
+                currentPlayerValue += 90;
+                break;
+            case "King":
+                currentPlayerValue += 900;
+                break;
+        }
+    })
+    let movingSprite = null
+    let movingPiece = null;
+    let potentialMove = null;
+    let isCapture = false;
+    // GENERATE POSSIBLE MOVES
     let aiPieces = aiSprites.map((sprite) => getPieceObject(sprite.id));
-    let playerPieces = playerSprites.map((sprite) => getPieceObject(sprite.id));
     aiPieces.forEach((piece, index) => {
+        currentPiece = piece;
         let moveArrays = buildMoveArrays(piece, blackOccupiedSpaces, whiteOccupiedSpaces);
+        moveArrays = checkIfKingInDanger(moveArrays, blackOccupiedSpaces, whiteOccupiedSpaces);
         // EVALUATE POSSIBLE CAPTURES
-        moveArrays[1].forEach((capture) => {
-            console.log("there is a capture");
-            let futurePlayerSprites = playerSprites.filter((sprite) => {
-                return ((getPieceObject(sprite.id).square[0] != capture[0]) || (getPieceObject(sprite.id).square[1] != capture[1]));
-            })
-            console.log(futurePlayerSprites);
-            let pointValue = 0;
-            futurePlayerSprites.forEach((futureSprite) => {
-                switch (futureSprite.id.slice(5, 9)) {
-                    case "pawn":
-                        pointValue += 10;
-                        break;
-                    case "knig":
-                    case "bish":
-                        pointValue += 30;
-                        break;
-                    case "rook":
-                        pointValue += 50;
-                        break;
-                    case "quee":
-                        pointValue += 90;
-                        break;
-                    case "king":
-                        pointValue += 900;
-                        break;
+        if (moveArrays[1].length > 0) {
+            moveArrays[1].forEach((capture) => {
+                let futurePlayerSprites = playerSprites.filter((sprite) => {
+                    return ((getPieceObject(sprite.id).square[0] != capture[0]) || (getPieceObject(sprite.id).square[1] != capture[1]));
+                })
+                let pointValue = 0;
+                futurePlayerSprites.forEach((futureSprite) => {
+                    switch (futureSprite.id.slice(5, 9)) {
+                        case "Pawn":
+                            pointValue += 10;
+                            break;
+                        case "Knig":
+                        case "Bish":
+                            pointValue += 30;
+                            break;
+                        case "Rook":
+                            pointValue += 50;
+                            break;
+                        case "Quee":
+                            pointValue += 90;
+                            break;
+                        case "King":
+                            pointValue += 900;
+                            break;
+                    }
+                })
+                console.log(`future point value : ${pointValue}`);
+                if (pointValue < currentPlayerValue) {
+                    isCapture = true;
+                    currentPlayerValue = pointValue;
+                    movingSprite = aiSprites[index];
+                    movingPiece = piece;
+                    potentialMove = capture;
                 }
             })
-            if (pointValue < currentPlayerValue) {
-                isCapture = true;
-                currentPlayerValue = pointValue;
-                movingSprite = aiSprites[index];
-                movingPiece = piece;
-                potentialMove = capture;
-            }
-        })
+        }
     })
     // no capture? random move
-    if (currentPlayerValue == 1290) {
-        console.log("random move");
+    if (! isCapture) {
         let aiPieceMovers = [];
         aiPieces.forEach((piece) => {
+            currentPiece = piece;
             let moveArrays = buildMoveArrays(piece, blackOccupiedSpaces, whiteOccupiedSpaces);
+            moveArrays = checkIfKingInDanger(moveArrays, blackOccupiedSpaces, whiteOccupiedSpaces);
             if (moveArrays[0].length > 0) {
                 aiPieceMovers.push(1);
             } else {
@@ -727,33 +745,27 @@ const handleAiMove = () => {
         movingPiece = aiPieces[randomIndex];
         let randomPieceMoves = buildMoveArrays(aiPieces[randomIndex], blackOccupiedSpaces, whiteOccupiedSpaces);
         potentialMove = randomPieceMoves[0][Math.floor(Math.random() * randomPieceMoves[0].length)];
-        console.log(movingPiece);
-        console.log(potentialMove);
     }
-
-
     // MAKE THE MOVE
+    animateMovement(movingSprite, convertSquareXYtoClass(movingPiece.square), convertSquareXYtoClass(potentialMove));
+    await new Promise(r => setTimeout(r, 600));
     if (isCapture) {
         let capturedPiece = document.querySelectorAll(`.${convertSquareXYtoClass(potentialMove)}`)[1];
         capturedPiece.remove()
         let captureIndex = whiteOccupiedSpaces.indexOf(potentialMove);
         whiteOccupiedSpaces.splice(captureIndex, 1);
     }
-
     movingSprite.classList.remove(convertSquareXYtoClass(movingPiece.square));
     movingSprite.classList.add(convertSquareXYtoClass(potentialMove));
-
     let oldLocationIndex = blackOccupiedSpaces.indexOf(movingPiece.square);
-    movingPiece.square = convertSquareXYtoClass(potentialMove);
-
+    movingPiece.square = potentialMove;
     blackOccupiedSpaces.splice(oldLocationIndex, 1);
     blackOccupiedSpaces.push(potentialMove);
-
     gameState = 1;
 }
 
 const endGame = (who, type) => {
-    let winner = ["White", "Black"];
+    let player = ["White", "Black"];
     let opponent = ["Black", "White"];
     gameState = 5;
     switch (type) {
@@ -761,28 +773,61 @@ const endGame = (who, type) => {
             endScreen.classList.remove("main__overlay--hidden");
             endScreen.innerHTML = 
                 `<h2 class="main__overlay--text">
-                    ${winner[who]} wins!
+                    ${player[who]} wins!
                 </h2>`
             break;
         case 2:
             endScreen.classList.remove("main__overlay--hidden");
             endScreen.innerHTML = 
                 `<h2 class="main__overlay--text">
-                    ${winner[who]} has no possible moves. 
+                    ${player[who]} has no possible moves. 
                 </h2>
                 <h2 class="main__overlay--text">
                     ${opponent[who]} wins! 
                 </h2>`
             break; 
+        case 3:
+            endScreen.classList.remove("main__overlay--hidden");
+            endScreen.innerHTML = 
+            `<h2 class="main__overlay--text">
+                ${player[who]} forfeits the match. 
+            </h2>
+            <h2 class="main__overlay--text">
+                ${opponent[who]} wins! 
+            </h2>`
+        break; 
     }
 }
 
 showStartOverlay();
 
 document.addEventListener("click", function (event) {
+    console.log(event.target);
     if (! isPieceMoving) {
         if (event.target.matches(".reset")) {
+            resetButton.innerHTML += `<h3 class="header__button--text reset-text">Reset Game</h3>`
+        } else {
+            resetButton.innerHTML = `<i class="fa-solid fa-arrow-rotate-left fa-2xl reset"></i>`
+        }
+        if (event.target.matches(".forfeit")) {
+            forfeitButton.innerHTML += `<h3 class="header__button--text forfeit-text">Forfeit Match</h3>`
+        } else {
+            forfeitButton.innerHTML = `<i class="fa-regular fa-flag fa-2xl forfeit"></i>`
+        }
+        if (event.target.matches(".reset-text")) {
             resetGame();
+        }
+        if (event.target.matches(".forfeit-text")) {
+            switch (gameState) {
+                case 1:
+                case 2:
+                    endGame(0, 3);
+                    break;
+                case 3:
+                case 4:
+                    endGame(1, 3);
+                    break;
+            }
         }
         if (event.target.matches(".piece__button")) {
             currentPiece = getPieceObject(event.target.id);

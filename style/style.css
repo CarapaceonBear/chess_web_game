@@ -22,34 +22,44 @@ body {
   width: 80%;
   max-width: 700px;
 }
-.header__title {
-  font-weight: 700;
-  font-size: 48px;
-  color: #272033;
-}
-.header__title--hidden {
-  display: none;
-}
 .header__description {
   font-weight: 400;
   font-size: 28px;
   color: #272033;
+  text-align: center;
 }
-.header__reset {
+.header__button-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
   position: absolute;
   bottom: 1rem;
   right: 1rem;
+}
+.header__button {
   background-color: rgba(255, 255, 255, 0);
   height: 3rem;
   width: 3rem;
   border-radius: 1.5rem;
   border: none;
+  position: relative;
 }
-.header__reset--hidden {
+.header__button--hidden {
   display: none;
 }
-.header__reset:hover {
+.header__button:hover {
   background-color: rgba(84, 12, 123, 0.4745098039);
+}
+.header__button--text {
+  position: absolute;
+  bottom: -0.65rem;
+  right: 0;
+  font-family: "Josefin Sans", sans-serif;
+  background-color: #ddd5e2;
+  border: 1px solid #272033;
+  border-radius: 5px;
+  padding: 2px;
 }
 
 @media screen and (max-width: 500px) {
@@ -61,12 +71,12 @@ body {
     margin: 0.8rem;
     font-size: 24px;
   }
-  .header__reset {
+  .header__button-box {
     margin-top: 2rem;
     position: relative;
     bottom: 0;
     right: 0;
-    order: 1;
+    order: 0;
   }
 }
 .main {
@@ -110,6 +120,7 @@ body {
 .main__overlay--text {
   font-weight: 700;
   font-size: 32px;
+  text-align: center;
 }
 .main__overlay--button {
   font-family: "Josefin Sans", sans-serif;
@@ -487,5 +498,6 @@ body {
   .footer__link {
     padding: 0.6rem;
     font-size: 14px;
+    text-align: center;
   }
 }/*# sourceMappingURL=style.css.map */
