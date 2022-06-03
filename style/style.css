@@ -22,14 +22,6 @@ body {
   width: 80%;
   max-width: 700px;
 }
-.header__title {
-  font-weight: 700;
-  font-size: 48px;
-  color: #272033;
-}
-.header__title--hidden {
-  display: none;
-}
 .header__description {
   font-weight: 400;
   font-size: 28px;
@@ -51,6 +43,16 @@ body {
 }
 .header__reset:hover {
   background-color: rgba(84, 12, 123, 0.4745098039);
+}
+.header__reset--text {
+  position: absolute;
+  bottom: -0.6rem;
+  right: 0;
+  font-family: "Josefin Sans", sans-serif;
+  background-color: #ddd5e2;
+  border: 1px solid #272033;
+  border-radius: 5px;
+  padding: 2px;
 }
 
 @media screen and (max-width: 500px) {

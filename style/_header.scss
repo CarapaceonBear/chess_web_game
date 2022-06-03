@@ -10,14 +10,6 @@
     width: 80%;
     max-width: 700px;
     
-    &__title {
-        font-weight: $font-bold;
-        font-size: 48px;
-        color: $foreground-color;
-        &--hidden {
-            display: none;
-        }
-    }
     &__description {
         font-weight: $font-regular;
         font-size: 28px;
@@ -45,6 +37,19 @@
 
         &:hover {
             background-color: #540c7b79;
+        }
+
+        &--text {
+            position: absolute;
+            bottom: -0.6rem;
+            right: 0;
+
+            font-family: $primary-font;
+            background-color: $background-color;
+
+            border: 1px solid $foreground-color;
+            border-radius: 5px;
+            padding: 2px;
         }
     }
 

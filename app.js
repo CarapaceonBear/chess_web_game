@@ -6,7 +6,6 @@ const gameDescription = document.querySelector(".header__description")
 const startScreen = document.querySelector("#start-screen");
 const endScreen = document.querySelector("#end-screen");
 const resetButton = document.querySelector(".header__reset");
-const title = document.querySelector(".header__title");
 
 const pieces = [...pieceArray];
 
@@ -30,12 +29,10 @@ let aiState = 0;
 
 const showStartOverlay = () => {
     startScreen.classList.remove("main__overlay--hidden");
-    // title.classList.remove("header__title--hidden");
     resetButton.classList.add("header__reset--hidden");
 }
 
 const setUpBoard = () => {
-    // title.classList.add("header__title--hidden");
     resetButton.classList.remove("header__reset--hidden");
     clearOverlays();
     gameState = 1;
@@ -792,8 +789,14 @@ const endGame = (who, type) => {
 showStartOverlay();
 
 document.addEventListener("click", function (event) {
+    console.log(event.target);
     if (! isPieceMoving) {
         if (event.target.matches(".reset")) {
+            resetButton.innerHTML += `<h3 class="header__reset--text">Reset Game</h3>`
+        } else {
+            resetButton.innerHTML = `<i class="fa-solid fa-arrow-rotate-left fa-2xl reset"></i>`
+        }
+        if (event.target.matches(".header__reset--text")) {
             resetGame();
         }
         if (event.target.matches(".piece__button")) {
