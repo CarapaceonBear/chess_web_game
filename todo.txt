@@ -1,11 +1,8 @@
 handle check and mate
 
 undo?
-forfeit button
 
 add to rulesets:
  - castling
  - en passante
  - pawn promotion
-
-simple ai opponent.
