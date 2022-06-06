@@ -10,7 +10,6 @@ It can be played with 2-players using one screen, or 1-player against a <i>very<
 Still to do:
 - Better AI decision-making.
 - More advanced rules: castling, pawn promotion, en passant.
-- Forfeit button.
 - Undo.
 
 -----------------------------------------------------------------------------------------------
