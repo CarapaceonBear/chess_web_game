@@ -762,6 +762,7 @@ const handleAiMove = async () => {
     blackOccupiedSpaces.splice(oldLocationIndex, 1);
     blackOccupiedSpaces.push(potentialMove);
     gameState = 1;
+    displayWhoseMove(gameState);
 }
 
 const endGame = (who, type) => {
